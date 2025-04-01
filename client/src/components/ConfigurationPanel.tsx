@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
-import { contentTypes, writingStyles, contentLengths } from "@/lib/constants";
+import { contentTypes as defaultContentTypes, writingStyles as defaultWritingStyles, contentLengths } from "@/lib/constants";
 
 interface ConfigurationPanelProps {
   onGenerate: (content: string) => void;
@@ -18,17 +18,28 @@ const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
   setIsGenerating,
   isGenerating,
 }) => {
+  // State for content types and writing styles with custom options
+  const [contentTypes, setContentTypes] = useState([...defaultContentTypes]);
+  const [writingStyles, setWritingStyles] = useState([...defaultWritingStyles]);
+  
+  // Basic configuration state
   const [contentType, setContentType] = useState("paragraph");
   const [writingStyle, setWritingStyle] = useState("professional");
   const [contentLength, setContentLength] = useState("medium");
   const [customLength, setCustomLength] = useState("");
   const [topic, setTopic] = useState("");
   
+  // Dropdown search and display state
   const [contentTypeSearch, setContentTypeSearch] = useState("");
   const [writingStyleSearch, setWritingStyleSearch] = useState("");
   const [showContentTypeDropdown, setShowContentTypeDropdown] = useState(false);
   const [showWritingStyleDropdown, setShowWritingStyleDropdown] = useState(false);
   
+  // Custom type/style input state
+  const [customContentTypeName, setCustomContentTypeName] = useState("");
+  const [customWritingStyleName, setCustomWritingStyleName] = useState("");
+  
+  // Refs for detecting clicks outside dropdowns
   const contentTypeRef = useRef<HTMLDivElement>(null);
   const writingStyleRef = useRef<HTMLDivElement>(null);
   
@@ -52,6 +63,7 @@ const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
     };
   }, []);
 
+  // Handle content generation
   const handleGenerate = async () => {
     if (!topic.trim()) {
       toast({
@@ -92,6 +104,7 @@ const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
     }
   };
 
+  // Handle prompt enhancement
   const handleEnhancePrompt = async () => {
     if (!topic.trim()) {
       toast({
@@ -122,29 +135,109 @@ const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
       });
     }
   };
-
+  
   // Filter content types based on search
-  const filteredContentTypes = contentTypes.filter(type => 
-    type.label.toLowerCase().includes(contentTypeSearch.toLowerCase())
-  );
+  const filteredContentTypes = contentTypeSearch.toLowerCase() === "add custom" || contentTypeSearch.toLowerCase() === "custom"
+    ? [...contentTypes, { value: "custom_new", label: "➕ Add Custom Content Type" }]
+    : contentTypes.filter((type) => 
+        type.label.toLowerCase().includes(contentTypeSearch.toLowerCase())
+      );
 
   // Filter writing styles based on search
-  const filteredWritingStyles = writingStyles.filter(style => 
-    style.label.toLowerCase().includes(writingStyleSearch.toLowerCase())
-  );
+  const filteredWritingStyles = writingStyleSearch.toLowerCase() === "add custom" || writingStyleSearch.toLowerCase() === "custom"
+    ? [...writingStyles, { value: "custom_new", label: "➕ Add Custom Writing Style" }]
+    : writingStyles.filter((style) => 
+        style.label.toLowerCase().includes(writingStyleSearch.toLowerCase())
+      );
 
+  // Get current content type label for display
   const getCurrentContentTypeLabel = () => {
-    const type = contentTypes.find(t => t.value === contentType);
+    const type = contentTypes.find((t) => t.value === contentType);
     return type ? type.label : "Select content type";
   };
 
+  // Get current writing style label for display
   const getCurrentWritingStyleLabel = () => {
-    const style = writingStyles.find(s => s.value === writingStyle);
+    const style = writingStyles.find((s) => s.value === writingStyle);
     return style ? style.label : "Select writing style";
+  };
+  
+  // Handle adding a custom content type
+  const handleAddCustomContentType = () => {
+    if (customContentTypeName.trim()) {
+      const newValue = customContentTypeName.toLowerCase().replace(/\s+/g, "");
+      if (!contentTypes.some((t) => t.value === newValue)) {
+        setContentTypes((prev) => [...prev, { value: newValue, label: customContentTypeName.trim() }]);
+        setContentType(newValue);
+        setShowContentTypeDropdown(false);
+        setContentTypeSearch("");
+        setCustomContentTypeName("");
+        toast({
+          title: "Content type added",
+          description: `Added "${customContentTypeName.trim()}" to content types.`,
+        });
+      }
+    }
+  };
+  
+  // Handle adding a custom writing style
+  const handleAddCustomWritingStyle = () => {
+    if (customWritingStyleName.trim()) {
+      const newValue = customWritingStyleName.toLowerCase().replace(/\s+/g, "");
+      if (!writingStyles.some((s) => s.value === newValue)) {
+        setWritingStyles((prev) => [...prev, { value: newValue, label: customWritingStyleName.trim() }]);
+        setWritingStyle(newValue);
+        setShowWritingStyleDropdown(false);
+        setWritingStyleSearch("");
+        setCustomWritingStyleName("");
+        toast({
+          title: "Writing style added",
+          description: `Added "${customWritingStyleName.trim()}" to writing styles.`,
+        });
+      }
+    }
+  };
+
+  // Handle selecting a content type or custom option
+  const handleContentTypeSelect = (type: { value: string, label: string }) => {
+    if (type.value === "custom_new") {
+      setShowContentTypeDropdown(false);
+      setContentTypeSearch("");
+      
+      // Show input modal for custom type
+      const customName = window.prompt("Enter name for your custom content type:");
+      if (customName && customName.trim()) {
+        setCustomContentTypeName(customName.trim());
+        handleAddCustomContentType();
+      }
+    } else {
+      setContentType(type.value);
+      setShowContentTypeDropdown(false);
+      setContentTypeSearch("");
+    }
+  };
+
+  // Handle selecting a writing style or custom option
+  const handleWritingStyleSelect = (style: { value: string, label: string }) => {
+    if (style.value === "custom_new") {
+      setShowWritingStyleDropdown(false);
+      setWritingStyleSearch("");
+      
+      // Show input modal for custom style
+      const customName = window.prompt("Enter name for your custom writing style:");
+      if (customName && customName.trim()) {
+        setCustomWritingStyleName(customName.trim());
+        handleAddCustomWritingStyle();
+      }
+    } else {
+      setWritingStyle(style.value);
+      setShowWritingStyleDropdown(false);
+      setWritingStyleSearch("");
+    }
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+    <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100 h-full">
       <h2 className="text-xl font-semibold text-gray-900 mb-6">Configuration</h2>
       
       <div className="mb-6">
@@ -165,7 +258,7 @@ const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
               <div className="p-2 border-b border-gray-200">
                 <Input 
                   type="text" 
-                  placeholder="Search content type..." 
+                  placeholder="Search content type or type 'custom'..." 
                   value={contentTypeSearch}
                   onChange={(e) => setContentTypeSearch(e.target.value)}
                   className="search-input"
@@ -177,12 +270,8 @@ const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
                   filteredContentTypes.map((type) => (
                     <div 
                       key={type.value} 
-                      className={`p-2.5 cursor-pointer hover:bg-gray-100 ${contentType === type.value ? 'bg-primary/10 text-primary' : ''}`}
-                      onClick={() => {
-                        setContentType(type.value);
-                        setShowContentTypeDropdown(false);
-                        setContentTypeSearch("");
-                      }}
+                      className={`p-2.5 cursor-pointer hover:bg-gray-100 ${contentType === type.value ? 'bg-primary/10 text-primary' : ''} ${type.value === 'custom_new' ? 'font-medium text-primary' : ''}`}
+                      onClick={() => handleContentTypeSelect(type)}
                     >
                       {type.label}
                     </div>
@@ -214,7 +303,7 @@ const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
               <div className="p-2 border-b border-gray-200">
                 <Input 
                   type="text" 
-                  placeholder="Search writing style..." 
+                  placeholder="Search writing style or type 'custom'..." 
                   value={writingStyleSearch}
                   onChange={(e) => setWritingStyleSearch(e.target.value)}
                   className="search-input"
@@ -226,12 +315,8 @@ const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
                   filteredWritingStyles.map((style) => (
                     <div 
                       key={style.value} 
-                      className={`p-2.5 cursor-pointer hover:bg-gray-100 ${writingStyle === style.value ? 'bg-primary/10 text-primary' : ''}`}
-                      onClick={() => {
-                        setWritingStyle(style.value);
-                        setShowWritingStyleDropdown(false);
-                        setWritingStyleSearch("");
-                      }}
+                      className={`p-2.5 cursor-pointer hover:bg-gray-100 ${writingStyle === style.value ? 'bg-primary/10 text-primary' : ''} ${style.value === 'custom_new' ? 'font-medium text-primary' : ''}`}
+                      onClick={() => handleWritingStyleSelect(style)}
                     >
                       {style.label}
                     </div>

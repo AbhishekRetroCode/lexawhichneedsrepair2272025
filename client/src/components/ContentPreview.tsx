@@ -57,7 +57,7 @@ const ContentPreview: React.FC<ContentPreviewProps> = ({ content, isGenerating }
   };
 
   return (
-    <div className="lg:w-2/3 bg-white rounded-xl shadow-sm p-6 border border-gray-100 h-auto min-h-[500px] flex flex-col">
+    <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100 h-full min-h-[500px] flex flex-col">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-lg font-medium text-gray-900">Generated Content</h2>
         <div className="flex space-x-2">
@@ -96,13 +96,8 @@ const ContentPreview: React.FC<ContentPreviewProps> = ({ content, isGenerating }
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
             </svg>
           </div>
-          <h3 className="text-lg font-medium text-gray-900 mb-2">No content generated yet</h3>
-          <p className="text-gray-500 max-w-md mb-6">Configure your options and click "Generate Content" to create your perfect text using Gemini AI.</p>
-          <div className="flex space-x-2">
-            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary">1000+ Content Types</span>
-            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-secondary/10 text-secondary">Customizable Styles</span>
-            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-accent/10 text-accent">Adjustable Length</span>
-          </div>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">Ready to Generate</h3>
+          <p className="text-gray-500 max-w-md mb-6">Set your parameters and click "Generate Content" to create professional text using Gemini AI.</p>
         </div>
       )}
       
