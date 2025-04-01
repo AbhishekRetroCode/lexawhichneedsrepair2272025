@@ -2,7 +2,7 @@ import { fetch } from "undici";
 
 // Try to use environment variables first, then fall back to hardcoded key
 // Note: In production, you should always use environment variables
-const HARDCODED_API_KEY = "AIzaSyBmzW4_BRXj2aGvYw0XMu5j3LRzmKqLGQY"; // Fallback key (may not work)
+const HARDCODED_API_KEY = "AIzaSyDpOi0ubjgPZZ4SNP2Op4nJj0o1RlHIsa8"; // Fallback key
 
 // Priority order: GEMINI_API_KEY > GEMINI_API_KEY_2 > GEMINI_API_KEY_3 > hardcoded key
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || process.env.GEMINI_API_KEY_2 || 
