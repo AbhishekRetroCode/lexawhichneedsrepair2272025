@@ -1,0 +1,40 @@
+Create a modern, sleek paragraph generator website called Lexa • Powered by Quzard, that leverages the Gemini API to generate high-quality text, including over 1000+ content types and writing styles/tones. These should include various forms of text like paragraphs, emails, articles, essays, blog posts, stories, product descriptions, social media posts, and much more, with adjustable lengths and customizable writing styles such as formal, casual, professional, creative, and various niche tones. The design should feature a dotted grid background for structure and elegance, with a minimalistic typewriter font that is both sophisticated and easy to read. The color scheme should emphasize black text for clarity and purple accents for UI elements and background highlights, giving the site a premium and futuristic feel.
+
+The configuration panel should be clean, intuitive, and organized, with dropdown lists stacked vertically for easy content configuration. This panel should include the following:
+
+A dropdown list for selecting content type (e.g., paragraph, email, article, blog post, etc.)
+
+A dropdown list for selecting writing style (e.g., formal, casual, creative, professional, etc.)
+
+A dropdown list for selecting content length (number of words or number of paragraphs, with one being optional)
+
+Beside the content/topic input box, there should be an "Enhance Prompt" button, which allows users to improve their initial input, providing suggestions or automatic adjustments for better content generation.
+
+The font for the configuration panel should use Suisse Int’l or Inter, both of which are modern, sleek, and highly readable fonts, adding a professional touch to the interface. The panel should be organized and simple to navigate, ensuring users can quickly make selections to customize their content. It should also provide copy and download options, along with a live preview of the generated text. The content should be dynamically generated based on user inputs, giving them a broad range of customizable choices.
+
+During text generation, add premium animations to elevate the user experience. Use elegant loading animations with premium placeholder lines that change each time content is generated. These lines should convey a sense of refinement and sophistication. For example:
+
+"Crafting your masterpiece..."
+
+"Shaping your perfect narrative..."
+
+"Weaving your words with precision..."
+
+"Bringing your ideas to life..."
+
+"Designing a text that speaks volumes..."
+
+"Refining your thoughts with expertise..."
+
+"Building your ideal content, piece by piece..."
+
+"Orchestrating your perfect message..."
+
+These lines should rotate dynamically with each text generation, adding a fresh, premium experience for the user each time. The text animation should be smooth and refined, with seamless transitions that highlight the premium nature of the site.
+
+Additionally, implement copy and download options, along with a live preview of the generated text. The animations should ensure the website feels responsive, professional, and high-end, while delivering a polished interface and an interactive experience.
+
+Functionality should include Gemini API integration, offering over 1000+ unique content types and a variety of writing styles/tones such as formal, casual, professional, creative, technical, humorous, persuasive, and more, ensuring versatility for different audiences and purposes. A secure file storage system for the Gemini API key should be implemented, ensuring that the API key is stored securely in a file and will never be shown on the website or exposed to the user. This ensures seamless access to AI-generated content while safeguarding user credentials and API security.
+
+The final design should deliver a structured, creative, and premium user experience, combining a polished interface, responsive UI elements, and seamless interactivity to provide a high-end feel for users. It should feel both cutting-edge and intuitive, allowing users to generate any content they need in a professional and high-quality manner.
+
