@@ -40,18 +40,11 @@ export const writingStyles = [
 ];
 
 export const contentLengths = [
-  { value: "100words", label: "100 words" },
-  { value: "300words", label: "300 words" },
-  { value: "500words", label: "500 words" },
-  { value: "750words", label: "750 words" },
-  { value: "1000words", label: "1000 words" },
-  { value: "1paragraph", label: "1 paragraph" },
-  { value: "3paragraphs", label: "3 paragraphs" },
-  { value: "5paragraphs", label: "5 paragraphs" },
-  { value: "8paragraphs", label: "8 paragraphs" },
+  { value: "tiny", label: "Tiny" },
   { value: "short", label: "Short" },
   { value: "medium", label: "Medium" },
   { value: "long", label: "Long" },
+  { value: "custom", label: "Custom" }
 ];
 
 export const loadingMessages = [

@@ -151,18 +151,37 @@ function constructGenerationPrompt(
 ): string {
   // Convert contentLength to appropriate format instructions
   let lengthInstruction = "";
+  
+  // Handle custom input that might still use the old format
   if (contentLength.includes("words")) {
     const wordCount = contentLength.replace("words", "");
     lengthInstruction = `approximately ${wordCount} words`;
   } else if (contentLength.includes("paragraphs")) {
     const paragraphCount = contentLength.replace("paragraphs", "");
     lengthInstruction = `${paragraphCount} paragraphs`;
-  } else if (contentLength === "short") {
-    lengthInstruction = "brief and concise (around 100-150 words)";
-  } else if (contentLength === "medium") {
-    lengthInstruction = "moderately detailed (around 300-400 words)";
-  } else if (contentLength === "long") {
-    lengthInstruction = "comprehensive and detailed (around 700-1000 words)";
+  } else {
+    // Handle new simplified content length options
+    switch (contentLength) {
+      case "tiny":
+        lengthInstruction = "very brief and concise (around 50-100 words)";
+        break;
+      case "short":
+        lengthInstruction = "brief and concise (around 150-250 words)";
+        break;
+      case "medium":
+        lengthInstruction = "moderately detailed (around 300-500 words)";
+        break;
+      case "long":
+        lengthInstruction = "comprehensive and detailed (around 700-1000 words)";
+        break;
+      default:
+        // If a custom value that doesn't match any pattern, use it directly
+        if (contentLength && !isNaN(Number(contentLength))) {
+          lengthInstruction = `approximately ${contentLength} words`;
+        } else {
+          lengthInstruction = "moderately detailed (around 300-500 words)";
+        }
+    }
   }
 
   let contentTypeDescription = "";

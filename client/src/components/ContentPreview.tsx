@@ -147,7 +147,7 @@ const ContentPreview: React.FC<ContentPreviewProps> = ({ content, isGenerating }
           animate={{ opacity: 1 }}
           className="flex-1 overflow-auto"
         >
-          <div className="prose prose-sm sm:prose lg:prose-lg max-w-none">
+          <div className="prose prose-sm sm:prose lg:prose-lg max-w-none typewriter-font">
             {content.split('\n\n').map((paragraph, index) => (
               <p key={index}>{paragraph}</p>
             ))}

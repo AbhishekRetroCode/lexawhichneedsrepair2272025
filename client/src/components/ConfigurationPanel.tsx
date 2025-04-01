@@ -1,13 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
@@ -26,9 +20,37 @@ const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
 }) => {
   const [contentType, setContentType] = useState("paragraph");
   const [writingStyle, setWritingStyle] = useState("professional");
-  const [contentLength, setContentLength] = useState("300words");
+  const [contentLength, setContentLength] = useState("medium");
+  const [customLength, setCustomLength] = useState("");
   const [topic, setTopic] = useState("");
+  
+  const [contentTypeSearch, setContentTypeSearch] = useState("");
+  const [writingStyleSearch, setWritingStyleSearch] = useState("");
+  const [showContentTypeDropdown, setShowContentTypeDropdown] = useState(false);
+  const [showWritingStyleDropdown, setShowWritingStyleDropdown] = useState(false);
+  
+  const contentTypeRef = useRef<HTMLDivElement>(null);
+  const writingStyleRef = useRef<HTMLDivElement>(null);
+  
   const { toast } = useToast();
+
+  // Handle clicks outside of dropdowns
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (contentTypeRef.current && !contentTypeRef.current.contains(event.target as Node)) {
+        setShowContentTypeDropdown(false);
+      }
+      
+      if (writingStyleRef.current && !writingStyleRef.current.contains(event.target as Node)) {
+        setShowWritingStyleDropdown(false);
+      }
+    }
+    
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const handleGenerate = async () => {
     if (!topic.trim()) {
@@ -40,13 +62,19 @@ const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
       return;
     }
 
+    // Handle custom length if selected
+    let finalContentLength = contentLength;
+    if (contentLength === "custom" && customLength.trim()) {
+      finalContentLength = customLength.trim();
+    }
+
     setIsGenerating(true);
     
     try {
       const response = await apiRequest("POST", "/api/generate", {
         contentType,
         writingStyle,
-        contentLength,
+        contentLength: finalContentLength,
         topic,
       });
       
@@ -95,68 +123,156 @@ const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
     }
   };
 
+  // Filter content types based on search
+  const filteredContentTypes = contentTypes.filter(type => 
+    type.label.toLowerCase().includes(contentTypeSearch.toLowerCase())
+  );
+
+  // Filter writing styles based on search
+  const filteredWritingStyles = writingStyles.filter(style => 
+    style.label.toLowerCase().includes(writingStyleSearch.toLowerCase())
+  );
+
+  const getCurrentContentTypeLabel = () => {
+    const type = contentTypes.find(t => t.value === contentType);
+    return type ? type.label : "Select content type";
+  };
+
+  const getCurrentWritingStyleLabel = () => {
+    const style = writingStyles.find(s => s.value === writingStyle);
+    return style ? style.label : "Select writing style";
+  };
+
   return (
-    <div className="lg:w-1/3 bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-      <h2 className="text-lg font-medium text-gray-900 mb-6">Configuration</h2>
+    <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+      <h2 className="text-xl font-semibold text-gray-900 mb-6">Configuration</h2>
       
       <div className="mb-6">
         <Label htmlFor="content-type" className="block text-sm font-medium text-gray-700 mb-2">Content Type</Label>
-        <Select
-          value={contentType}
-          onValueChange={setContentType}
-          disabled={isGenerating}
-        >
-          <SelectTrigger id="content-type" className="w-full">
-            <SelectValue placeholder="Select content type" />
-          </SelectTrigger>
-          <SelectContent>
-            {contentTypes.map((type) => (
-              <SelectItem key={type.value} value={type.value}>
-                {type.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <div className="search-select-container" ref={contentTypeRef}>
+          <div 
+            className="w-full p-2.5 border border-gray-300 rounded-lg cursor-pointer flex justify-between items-center"
+            onClick={() => setShowContentTypeDropdown(!showContentTypeDropdown)}
+          >
+            <span>{getCurrentContentTypeLabel()}</span>
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+            </svg>
+          </div>
+          
+          {showContentTypeDropdown && (
+            <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg">
+              <div className="p-2 border-b border-gray-200">
+                <Input 
+                  type="text" 
+                  placeholder="Search content type..." 
+                  value={contentTypeSearch}
+                  onChange={(e) => setContentTypeSearch(e.target.value)}
+                  className="search-input"
+                  autoFocus
+                />
+              </div>
+              <div className="max-h-60 overflow-y-auto">
+                {filteredContentTypes.length > 0 ? (
+                  filteredContentTypes.map((type) => (
+                    <div 
+                      key={type.value} 
+                      className={`p-2.5 cursor-pointer hover:bg-gray-100 ${contentType === type.value ? 'bg-primary/10 text-primary' : ''}`}
+                      onClick={() => {
+                        setContentType(type.value);
+                        setShowContentTypeDropdown(false);
+                        setContentTypeSearch("");
+                      }}
+                    >
+                      {type.label}
+                    </div>
+                  ))
+                ) : (
+                  <div className="p-2.5 text-center text-gray-500">No results found</div>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
       
       <div className="mb-6">
-        <Label htmlFor="writing-style" className="block text-sm font-medium text-gray-700 mb-2">Writing Style</Label>
-        <Select
-          value={writingStyle}
-          onValueChange={setWritingStyle}
-          disabled={isGenerating}
-        >
-          <SelectTrigger id="writing-style" className="w-full">
-            <SelectValue placeholder="Select writing style" />
-          </SelectTrigger>
-          <SelectContent>
-            {writingStyles.map((style) => (
-              <SelectItem key={style.value} value={style.value}>
-                {style.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <Label htmlFor="writing-style" className="block text-sm font-medium text-gray-700 mb-2">Writing Style / Tone</Label>
+        <div className="search-select-container" ref={writingStyleRef}>
+          <div 
+            className="w-full p-2.5 border border-gray-300 rounded-lg cursor-pointer flex justify-between items-center"
+            onClick={() => setShowWritingStyleDropdown(!showWritingStyleDropdown)}
+          >
+            <span>{getCurrentWritingStyleLabel()}</span>
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+            </svg>
+          </div>
+          
+          {showWritingStyleDropdown && (
+            <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg">
+              <div className="p-2 border-b border-gray-200">
+                <Input 
+                  type="text" 
+                  placeholder="Search writing style..." 
+                  value={writingStyleSearch}
+                  onChange={(e) => setWritingStyleSearch(e.target.value)}
+                  className="search-input"
+                  autoFocus
+                />
+              </div>
+              <div className="max-h-60 overflow-y-auto">
+                {filteredWritingStyles.length > 0 ? (
+                  filteredWritingStyles.map((style) => (
+                    <div 
+                      key={style.value} 
+                      className={`p-2.5 cursor-pointer hover:bg-gray-100 ${writingStyle === style.value ? 'bg-primary/10 text-primary' : ''}`}
+                      onClick={() => {
+                        setWritingStyle(style.value);
+                        setShowWritingStyleDropdown(false);
+                        setWritingStyleSearch("");
+                      }}
+                    >
+                      {style.label}
+                    </div>
+                  ))
+                ) : (
+                  <div className="p-2.5 text-center text-gray-500">No results found</div>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
       
       <div className="mb-6">
         <Label htmlFor="content-length" className="block text-sm font-medium text-gray-700 mb-2">Content Length</Label>
-        <Select
-          value={contentLength}
-          onValueChange={setContentLength}
-          disabled={isGenerating}
-        >
-          <SelectTrigger id="content-length" className="w-full">
-            <SelectValue placeholder="Select content length" />
-          </SelectTrigger>
-          <SelectContent>
-            {contentLengths.map((length) => (
-              <SelectItem key={length.value} value={length.value}>
-                {length.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <div className="flex flex-wrap gap-2">
+          {contentLengths.map((length) => (
+            <button
+              key={length.value}
+              type="button"
+              className={`content-length-btn ${contentLength === length.value ? 'active' : ''}`}
+              onClick={() => setContentLength(length.value)}
+              disabled={isGenerating}
+            >
+              {length.label}
+            </button>
+          ))}
+        </div>
+        
+        {contentLength === "custom" && (
+          <div className="mt-2">
+            <Input
+              type="text"
+              placeholder="Enter custom length (e.g., 500words, 3paragraphs)"
+              value={customLength}
+              onChange={(e) => setCustomLength(e.target.value)}
+              disabled={isGenerating}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+            />
+          </div>
+        )}
       </div>
       
       <div className="mb-6">
