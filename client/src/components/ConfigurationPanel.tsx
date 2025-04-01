@@ -238,31 +238,31 @@ const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100 w-full config-panel">
-      <h2 className="text-xl font-semibold text-gray-900 mb-6">Configuration</h2>
+    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-gray-700 w-full config-panel transition-colors">
+      <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">Configuration</h2>
       
       <div className="mb-6">
-        <Label htmlFor="content-type" className="block text-sm font-medium text-gray-700 mb-2">Content Type</Label>
+        <Label htmlFor="content-type" className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Content Type</Label>
         <div className="search-select-container" ref={contentTypeRef}>
           <div 
-            className="w-full p-2.5 border border-gray-300 rounded-lg cursor-pointer flex justify-between items-center"
+            className="w-full p-2.5 border border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer flex justify-between items-center bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
             onClick={() => setShowContentTypeDropdown(!showContentTypeDropdown)}
           >
             <span>{getCurrentContentTypeLabel()}</span>
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500 dark:text-gray-300" viewBox="0 0 20 20" fill="currentColor">
               <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
             </svg>
           </div>
           
           {showContentTypeDropdown && (
-            <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg">
-              <div className="p-2 border-b border-gray-200">
+            <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg">
+              <div className="p-2 border-b border-gray-200 dark:border-gray-600">
                 <Input 
                   type="text" 
                   placeholder="Search content type or type 'custom'..." 
                   value={contentTypeSearch}
                   onChange={(e) => setContentTypeSearch(e.target.value)}
-                  className="search-input"
+                  className="search-input dark:bg-gray-800 dark:text-white dark:border-gray-600"
                   autoFocus
                 />
               </div>
@@ -271,14 +271,14 @@ const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
                   filteredContentTypes.map((type) => (
                     <div 
                       key={type.value} 
-                      className={`p-2.5 cursor-pointer hover:bg-gray-100 ${contentType === type.value ? 'bg-primary/10 text-primary' : ''} ${type.value === 'custom_new' ? 'font-medium text-primary' : ''}`}
+                      className={`p-2.5 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 ${contentType === type.value ? 'bg-primary/10 text-primary dark:bg-primary/20' : 'dark:text-white'} ${type.value === 'custom_new' ? 'font-medium text-primary' : ''}`}
                       onClick={() => handleContentTypeSelect(type)}
                     >
                       {type.label}
                     </div>
                   ))
                 ) : (
-                  <div className="p-2.5 text-center text-gray-500">No results found</div>
+                  <div className="p-2.5 text-center text-gray-500 dark:text-gray-300">No results found</div>
                 )}
               </div>
             </div>
@@ -287,27 +287,27 @@ const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
       </div>
       
       <div className="mb-6">
-        <Label htmlFor="writing-style" className="block text-sm font-medium text-gray-700 mb-2">Writing Style / Tone</Label>
+        <Label htmlFor="writing-style" className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Writing Style / Tone</Label>
         <div className="search-select-container" ref={writingStyleRef}>
           <div 
-            className="w-full p-2.5 border border-gray-300 rounded-lg cursor-pointer flex justify-between items-center"
+            className="w-full p-2.5 border border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer flex justify-between items-center bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
             onClick={() => setShowWritingStyleDropdown(!showWritingStyleDropdown)}
           >
             <span>{getCurrentWritingStyleLabel()}</span>
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500 dark:text-gray-300" viewBox="0 0 20 20" fill="currentColor">
               <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
             </svg>
           </div>
           
           {showWritingStyleDropdown && (
-            <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg">
-              <div className="p-2 border-b border-gray-200">
+            <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg">
+              <div className="p-2 border-b border-gray-200 dark:border-gray-600">
                 <Input 
                   type="text" 
                   placeholder="Search writing style or type 'custom'..." 
                   value={writingStyleSearch}
                   onChange={(e) => setWritingStyleSearch(e.target.value)}
-                  className="search-input"
+                  className="search-input dark:bg-gray-800 dark:text-white dark:border-gray-600"
                   autoFocus
                 />
               </div>
@@ -316,14 +316,14 @@ const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
                   filteredWritingStyles.map((style) => (
                     <div 
                       key={style.value} 
-                      className={`p-2.5 cursor-pointer hover:bg-gray-100 ${writingStyle === style.value ? 'bg-primary/10 text-primary' : ''} ${style.value === 'custom_new' ? 'font-medium text-primary' : ''}`}
+                      className={`p-2.5 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 ${writingStyle === style.value ? 'bg-primary/10 text-primary dark:bg-primary/20' : 'dark:text-white'} ${style.value === 'custom_new' ? 'font-medium text-primary' : ''}`}
                       onClick={() => handleWritingStyleSelect(style)}
                     >
                       {style.label}
                     </div>
                   ))
                 ) : (
-                  <div className="p-2.5 text-center text-gray-500">No results found</div>
+                  <div className="p-2.5 text-center text-gray-500 dark:text-gray-300">No results found</div>
                 )}
               </div>
             </div>
@@ -332,7 +332,7 @@ const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
       </div>
       
       <div className="mb-6">
-        <Label htmlFor="content-length" className="block text-sm font-medium text-gray-700 mb-2">Content Length</Label>
+        <Label htmlFor="content-length" className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Content Length</Label>
         <div className="flex flex-wrap gap-2">
           {contentLengths.map((length) => (
             <button
@@ -351,31 +351,34 @@ const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
           <div className="mt-2">
             <Input
               type="text"
-              placeholder="Enter custom length (e.g., 500words, 3paragraphs)"
+              placeholder="E.g.: 500 words, 3 paragraphs, 8 sentences"
               value={customLength}
               onChange={(e) => setCustomLength(e.target.value)}
               disabled={isGenerating}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+              className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary dark:bg-gray-700 dark:text-white"
             />
+            <div className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+              Tip: Type a number followed by "words", "paragraphs", or "sentences"
+            </div>
           </div>
         )}
       </div>
       
       <div className="mb-6">
-        <Label htmlFor="content-topic" className="block text-sm font-medium text-gray-700 mb-2">Content/Topic</Label>
+        <Label htmlFor="content-topic" className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Content/Topic</Label>
         <div className="relative">
           <Textarea
             id="content-topic"
             rows={4}
             placeholder="Enter your topic or content details here..."
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary resize-none"
+            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-primary focus:border-primary resize-none dark:bg-gray-700 dark:text-white"
             value={topic}
             onChange={(e) => setTopic(e.target.value)}
             disabled={isGenerating}
           />
           <Button
             id="enhance-prompt"
-            className="absolute bottom-3 right-3 text-xs px-3 py-1.5 bg-primary/10 text-primary hover:bg-primary/20 transition-colors font-medium h-auto"
+            className="absolute bottom-3 right-3 text-xs px-3 py-1.5 bg-primary/10 text-primary hover:bg-primary/20 transition-colors font-medium h-auto dark:bg-primary/20 dark:hover:bg-primary/30"
             onClick={handleEnhancePrompt}
             disabled={isGenerating || !topic.trim()}
             variant="ghost"

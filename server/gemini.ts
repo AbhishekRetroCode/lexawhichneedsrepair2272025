@@ -137,9 +137,10 @@ export async function generateContent(
  */
 export async function enhancePrompt(topic: string): Promise<string> {
   try {
-    const prompt = `Please enhance the following content prompt to make it more detailed and specific so it produces better results when used with an AI text generator: "${topic}".
-    Your enhanced version should add relevant specifics, clarify the desired output format and style, and suggest some key points to include.
-    Return only the enhanced prompt text without any explanations, prefixes or quotation marks.`;
+    const prompt = `Slightly improve this content prompt to make it clearer: "${topic}".
+    Add 1-2 relevant details while keeping it brief and simple.
+    Make minimal changes - don't expand it significantly.
+    Return only the enhanced prompt text without explanations or quotes.`;
     
     const response = await fetchWithFallbackKeys(GEMINI_API_URL, {
       method: "POST",
@@ -157,10 +158,10 @@ export async function enhancePrompt(topic: string): Promise<string> {
           },
         ],
         generationConfig: {
-          temperature: 0.7,
+          temperature: 0.6,
           topK: 40,
-          topP: 0.95,
-          maxOutputTokens: 1024,
+          topP: 0.9,
+          maxOutputTokens: 512,
         },
       }),
     });
@@ -200,16 +201,31 @@ function constructGenerationPrompt(
   // Convert contentLength to appropriate format instructions
   let lengthInstruction = "";
   
-  // Handle custom input that might still use the old format
-  if (contentLength.includes("words")) {
-    const wordCount = contentLength.replace("words", "");
+  // Normalize the custom input - trim whitespace and convert to lowercase
+  const normalizedLength = contentLength.trim().toLowerCase();
+  
+  // Match patterns like "500 words", "500words", "500 word", "500word"
+  const wordMatch = normalizedLength.match(/(\d+)\s*(words?|word)/);
+  // Match patterns like "3 paragraphs", "3paragraphs", "3 paragraph", "3paragraph"
+  const paragraphMatch = normalizedLength.match(/(\d+)\s*(paragraphs?|paragraph)/);
+  // Match patterns for sentences
+  const sentenceMatch = normalizedLength.match(/(\d+)\s*(sentences?|sentence)/);
+  
+  if (wordMatch) {
+    // Extract the number of words
+    const wordCount = wordMatch[1];
     lengthInstruction = `approximately ${wordCount} words`;
-  } else if (contentLength.includes("paragraphs")) {
-    const paragraphCount = contentLength.replace("paragraphs", "");
+  } else if (paragraphMatch) {
+    // Extract the number of paragraphs
+    const paragraphCount = paragraphMatch[1];
     lengthInstruction = `${paragraphCount} paragraphs`;
+  } else if (sentenceMatch) {
+    // Extract the number of sentences
+    const sentenceCount = sentenceMatch[1];
+    lengthInstruction = `${sentenceCount} sentences`;
   } else {
-    // Handle new simplified content length options
-    switch (contentLength) {
+    // Handle standard content length options
+    switch (normalizedLength) {
       case "tiny":
         lengthInstruction = "very brief and concise (around 50-100 words)";
         break;
@@ -223,10 +239,11 @@ function constructGenerationPrompt(
         lengthInstruction = "comprehensive and detailed (around 700-1000 words)";
         break;
       default:
-        // If a custom value that doesn't match any pattern, use it directly
-        if (contentLength && !isNaN(Number(contentLength))) {
-          lengthInstruction = `approximately ${contentLength} words`;
+        // If custom value is just a number, assume it's the word count
+        if (normalizedLength && !isNaN(Number(normalizedLength))) {
+          lengthInstruction = `approximately ${normalizedLength} words`;
         } else {
+          // If custom value doesn't match any pattern, use a moderate length
           lengthInstruction = "moderately detailed (around 300-500 words)";
         }
     }

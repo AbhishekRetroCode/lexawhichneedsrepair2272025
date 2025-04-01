@@ -57,16 +57,16 @@ const ContentPreview: React.FC<ContentPreviewProps> = ({ content, isGenerating }
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100 w-full min-h-[400px] flex flex-col">
+    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-gray-700 w-full min-h-[400px] flex flex-col transition-colors">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-lg font-medium text-gray-900">Generated Content</h2>
+        <h2 className="text-lg font-medium text-gray-900 dark:text-white">Generated Content</h2>
         <div className="flex space-x-2">
           <Button
             variant="ghost"
             size="icon"
             onClick={handleCopy}
             disabled={!content || isGenerating}
-            className="text-gray-500 hover:text-primary transition-colors p-2 rounded-lg hover:bg-gray-50"
+            className="text-gray-500 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
               <path d="M8 2a1 1 0 000 2h2a1 1 0 100-2H8z" />
@@ -79,7 +79,7 @@ const ContentPreview: React.FC<ContentPreviewProps> = ({ content, isGenerating }
             size="icon"
             onClick={handleDownload}
             disabled={!content || isGenerating}
-            className="text-gray-500 hover:text-primary transition-colors p-2 rounded-lg hover:bg-gray-50"
+            className="text-gray-500 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
               <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
@@ -96,8 +96,8 @@ const ContentPreview: React.FC<ContentPreviewProps> = ({ content, isGenerating }
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
             </svg>
           </div>
-          <h3 className="text-lg font-medium text-gray-900 mb-2">Ready to Generate</h3>
-          <p className="text-gray-500 max-w-md mb-6">Set your parameters and click "Generate Content" to create professional text using Gemini AI.</p>
+          <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">Ready to Generate</h3>
+          <p className="text-gray-500 dark:text-gray-300 max-w-md mb-6">Set your parameters and click "Generate Content" to create professional text using Gemini AI.</p>
         </div>
       )}
       
@@ -116,7 +116,7 @@ const ContentPreview: React.FC<ContentPreviewProps> = ({ content, isGenerating }
               {[...Array(10)].map((_, index) => (
                 <motion.div
                   key={index}
-                  className={`w-${index % 2 === 0 ? 'full' : (11 - (index % 3)) + '/12'} h-4 bg-gray-100 rounded`}
+                  className={`w-${index % 2 === 0 ? 'full' : (11 - (index % 3)) + '/12'} h-4 bg-gray-100 dark:bg-gray-700 rounded`}
                   initial={{ x: -50, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
                   transition={{
@@ -142,7 +142,7 @@ const ContentPreview: React.FC<ContentPreviewProps> = ({ content, isGenerating }
           animate={{ opacity: 1 }}
           className="flex-1 overflow-auto"
         >
-          <div className="prose prose-sm sm:prose lg:prose-lg max-w-none typewriter-font">
+          <div className="prose prose-sm sm:prose lg:prose-lg max-w-none typewriter-font dark:prose-invert">
             {content.split('\n\n').map((paragraph, index) => (
               <p key={index}>{paragraph}</p>
             ))}

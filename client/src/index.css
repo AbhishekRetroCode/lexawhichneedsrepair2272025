@@ -17,6 +17,11 @@
     font-family: 'Suisse Int\'l', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   }
   
+  :root.dark body {
+    background-image: radial-gradient(circle, #333333 1px, transparent 1px);
+    background-color: #121212;
+  }
+  
   .typewriter-font {
     font-family: 'Courier New', Courier, monospace;
   }
@@ -37,6 +42,10 @@
     @apply px-3 py-1.5 rounded-md text-sm font-medium border border-gray-200 bg-white transition-all;
   }
   
+  .dark .content-length-btn {
+    @apply border-gray-700 bg-gray-700 text-gray-200;
+  }
+  
   .content-length-btn.active {
     @apply bg-primary text-white border-primary;
   }
@@ -48,6 +57,10 @@
   
   .search-input {
     @apply w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary;
+  }
+  
+  .dark .search-input {
+    @apply border-gray-600 bg-gray-800 text-white focus:border-primary;
   }
   
   .max-h-60 {
