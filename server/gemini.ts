@@ -1,15 +1,37 @@
-import { fetch } from "undici";
+import { fetch, type Response } from "undici";
+import * as fs from 'fs';
+import * as path from 'path';
+import * as dotenv from 'dotenv';
 
-// Try to use environment variables first, then fall back to hardcoded key
-// Note: In production, you should always use environment variables
-const HARDCODED_API_KEY = "AIzaSyDpOi0ubjgPZZ4SNP2Op4nJj0o1RlHIsa8"; // Fallback key
+// Setup for local development
+// Load environment variables from .env file if it exists (for local development)
+try {
+  // Check if a .env file exists in the project root
+  const envPath = path.resolve(process.cwd(), '.env');
+  if (fs.existsSync(envPath)) {
+    console.log('📁 Loading environment variables from .env file');
+    dotenv.config({ path: envPath });
+  }
+} catch (err) {
+  // Ignore error if .env file doesn't exist
+}
 
-// Priority order: GEMINI_API_KEY > GEMINI_API_KEY_2 > GEMINI_API_KEY_3 > hardcoded key
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY || process.env.GEMINI_API_KEY_2 || 
-                      process.env.GEMINI_API_KEY_3 || HARDCODED_API_KEY;
+// Hardcoded API key (only used as a last resort)
+const HARDCODED_API_KEY = "AIzaSyDpOi0ubjgPZZ4SNP2Op4nJj0o1RlHIsa8"; 
+
+// Priority order: 
+// 1. GEMINI_API_KEY from environment variables
+// 2. GEMINI_API_KEY_2 from environment variables
+// 3. GEMINI_API_KEY_3 from environment variables
+// 4. Hardcoded key as last resort
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY || 
+                      process.env.GEMINI_API_KEY_2 || 
+                      process.env.GEMINI_API_KEY_3 || 
+                      HARDCODED_API_KEY;
+
 const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent";
 
-// Log API key information for troubleshooting
+// Determine which source provided the API key
 const apiKeySource = process.env.GEMINI_API_KEY 
   ? "GEMINI_API_KEY" 
   : process.env.GEMINI_API_KEY_2 
@@ -17,24 +39,53 @@ const apiKeySource = process.env.GEMINI_API_KEY
     : process.env.GEMINI_API_KEY_3 
       ? "GEMINI_API_KEY_3" 
       : "Hardcoded fallback";
-console.log("Using API key source:", apiKeySource);
-console.log("API key present:", GEMINI_API_KEY ? "Yes (length: " + GEMINI_API_KEY.length + ")" : "No");
+
+// Log API key information for troubleshooting
+console.log("🔑 Using API key source:", apiKeySource);
+console.log("🔑 API key present:", GEMINI_API_KEY ? "Yes (length: " + GEMINI_API_KEY.length + ")" : "No");
 
 if (!GEMINI_API_KEY) {
-  console.warn("Warning: No Gemini API key set. Gemini API requests will fail.");
+  console.warn("⚠️ Warning: No Gemini API key set. Gemini API requests will fail.");
 }
 
-// Simplified fetch function using a single API key
+/**
+ * Enhanced fetch function with better error handling for API requests
+ * @param url The API endpoint URL
+ * @param options Fetch options including method, headers, and body
+ * @returns Promise with the API response
+ */
 async function fetchWithApiKey(url: string, options: any): Promise<any> {
   try {
+    if (!GEMINI_API_KEY) {
+      throw new Error(
+        "No API key available. Please set GEMINI_API_KEY in your environment variables or .env file."
+      );
+    }
+
     // Append API key to URL
     const modifiedUrl = url.includes('?key=') ? url : `${url}?key=${GEMINI_API_KEY}`;
     
+    // Log request (for debugging, without showing the full API key)
+    const keyPreview = GEMINI_API_KEY.substring(0, 4) + '...' + GEMINI_API_KEY.substring(GEMINI_API_KEY.length - 4);
+    console.log(`🔄 API Request to: ${url.split('?')[0]} (using key: ${keyPreview})`);
+    
     // Make the API request
     const response = await fetch(modifiedUrl, options);
+    
+    // Basic response logging
+    console.log(`📡 API Response: ${response.status} ${response.statusText}`);
+    
     return response;
   } catch (error) {
-    console.error("Error making API request:", error);
+    // Enhanced error logging
+    if (error instanceof Error) {
+      console.error(`❌ API Request Error: ${error.message}`);
+      if (error.stack) {
+        console.debug(`Stack trace: ${error.stack}`);
+      }
+    } else {
+      console.error("❌ Unknown API error:", error);
+    }
     throw error;
   }
 }
