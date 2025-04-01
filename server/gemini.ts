@@ -1,11 +1,14 @@
 import { fetch } from "undici";
 
-// Use a single API key
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY || "";
+// Use a hardcoded API key
+// Note: In production, you should use environment variables instead of hardcoding API keys
+const HARDCODED_API_KEY = "AIzaSyBmzW4_BRXj2aGvYw0XMu5j3LRzmKqLGQY"; // Your real Gemini API key
+// Force using the hardcoded key for testing
+const GEMINI_API_KEY = HARDCODED_API_KEY;
 const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent";
 
-// Log environment variables for troubleshooting (without revealing the actual key)
-console.log("Environment variables available:", Object.keys(process.env).filter(key => key.includes("GEMINI") || key.includes("API_KEY")));
+// Log API key information for troubleshooting
+console.log("Using API key source: Hardcoded API key");
 console.log("API key present:", GEMINI_API_KEY ? "Yes (length: " + GEMINI_API_KEY.length + ")" : "No");
 
 if (!GEMINI_API_KEY) {
