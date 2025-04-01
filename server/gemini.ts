@@ -4,6 +4,10 @@ import { fetch } from "undici";
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || "";
 const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent";
 
+// Log environment variables for troubleshooting (without revealing the actual key)
+console.log("Environment variables available:", Object.keys(process.env).filter(key => key.includes("GEMINI") || key.includes("API_KEY")));
+console.log("API key present:", GEMINI_API_KEY ? "Yes (length: " + GEMINI_API_KEY.length + ")" : "No");
+
 if (!GEMINI_API_KEY) {
   console.warn("Warning: No Gemini API key set. Gemini API requests will fail.");
 }
