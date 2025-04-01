@@ -5,7 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
-import { contentTypes as defaultContentTypes, writingStyles as defaultWritingStyles, contentLengths } from "@/lib/constants";
+import { contentLengths } from "@/lib/constants";
+import { extendedContentTypes, extendedWritingStyles } from "@/lib/extended-options";
 
 interface ConfigurationPanelProps {
   onGenerate: (content: string) => void;
@@ -19,8 +20,8 @@ const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
   isGenerating,
 }) => {
   // State for content types and writing styles with custom options
-  const [contentTypes, setContentTypes] = useState([...defaultContentTypes]);
-  const [writingStyles, setWritingStyles] = useState([...defaultWritingStyles]);
+  const [contentTypes, setContentTypes] = useState(extendedContentTypes);
+  const [writingStyles, setWritingStyles] = useState(extendedWritingStyles);
   
   // Basic configuration state
   const [contentType, setContentType] = useState("paragraph");
@@ -200,7 +201,7 @@ const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
 
   // Handle selecting a content type or custom option
   const handleContentTypeSelect = (type: { value: string, label: string }) => {
-    if (type.value === "custom_new") {
+    if (type.value === "custom_new" || type.value === "customType") {
       setShowContentTypeDropdown(false);
       setContentTypeSearch("");
       
@@ -219,7 +220,7 @@ const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
 
   // Handle selecting a writing style or custom option
   const handleWritingStyleSelect = (style: { value: string, label: string }) => {
-    if (style.value === "custom_new") {
+    if (style.value === "custom_new" || style.value === "customStyle") {
       setShowWritingStyleDropdown(false);
       setWritingStyleSearch("");
       

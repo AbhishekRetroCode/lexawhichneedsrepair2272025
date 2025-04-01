@@ -50,6 +50,11 @@
     @apply w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary;
   }
   
+  .max-h-60 {
+    max-height: 18rem;
+    scrollbar-width: thin;
+  }
+  
   /* Animation for loading content */
   @keyframes shimmer {
     0% {
