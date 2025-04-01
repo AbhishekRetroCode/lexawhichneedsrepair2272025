@@ -1,0 +1,66 @@
+export const contentTypes = [
+  { value: "paragraph", label: "Paragraph" },
+  { value: "email", label: "Email" },
+  { value: "article", label: "Article" },
+  { value: "blogPost", label: "Blog Post" },
+  { value: "socialMediaPost", label: "Social Media Post" },
+  { value: "productDescription", label: "Product Description" },
+  { value: "essay", label: "Essay" },
+  { value: "story", label: "Story" },
+  { value: "coverLetter", label: "Cover Letter" },
+  { value: "resume", label: "Resume" },
+  { value: "businessProposal", label: "Business Proposal" },
+  { value: "pressRelease", label: "Press Release" },
+  { value: "poem", label: "Poem" },
+  { value: "songLyrics", label: "Song Lyrics" },
+  { value: "script", label: "Script" },
+  { value: "speech", label: "Speech" },
+  { value: "tutorial", label: "Tutorial" },
+  { value: "reviewAnalysis", label: "Review/Analysis" },
+  { value: "marketingCopy", label: "Marketing Copy" },
+  { value: "presentation", label: "Presentation" },
+];
+
+export const writingStyles = [
+  { value: "formal", label: "Formal" },
+  { value: "casual", label: "Casual" },
+  { value: "professional", label: "Professional" },
+  { value: "creative", label: "Creative" },
+  { value: "technical", label: "Technical" },
+  { value: "humorous", label: "Humorous" },
+  { value: "persuasive", label: "Persuasive" },
+  { value: "informative", label: "Informative" },
+  { value: "conversational", label: "Conversational" },
+  { value: "academic", label: "Academic" },
+  { value: "journalistic", label: "Journalistic" },
+  { value: "poetic", label: "Poetic" },
+  { value: "analytical", label: "Analytical" },
+  { value: "storytelling", label: "Storytelling" },
+  { value: "inspirational", label: "Inspirational" },
+];
+
+export const contentLengths = [
+  { value: "100words", label: "100 words" },
+  { value: "300words", label: "300 words" },
+  { value: "500words", label: "500 words" },
+  { value: "750words", label: "750 words" },
+  { value: "1000words", label: "1000 words" },
+  { value: "1paragraph", label: "1 paragraph" },
+  { value: "3paragraphs", label: "3 paragraphs" },
+  { value: "5paragraphs", label: "5 paragraphs" },
+  { value: "8paragraphs", label: "8 paragraphs" },
+  { value: "short", label: "Short" },
+  { value: "medium", label: "Medium" },
+  { value: "long", label: "Long" },
+];
+
+export const loadingMessages = [
+  "Crafting your masterpiece...",
+  "Shaping your perfect narrative...",
+  "Weaving your words with precision...",
+  "Bringing your ideas to life...",
+  "Designing a text that speaks volumes...",
+  "Refining your thoughts with expertise...",
+  "Building your ideal content, piece by piece...",
+  "Orchestrating your perfect message..."
+];
