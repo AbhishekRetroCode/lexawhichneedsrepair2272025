@@ -1,59 +1,26 @@
 import { fetch } from "undici";
 
-// Multiple API keys support with fallback mechanism
-const GEMINI_API_KEYS = [
-  process.env.GEMINI_API_KEY || "",
-  process.env.GEMINI_API_KEY_2 || "",
-  process.env.GEMINI_API_KEY_3 || "",
-  process.env.API_KEY || "",
-].filter(key => key.length > 0); // Remove empty keys
-
+// Use a single API key
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY || "";
 const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent";
 
-if (GEMINI_API_KEYS.length === 0) {
-  console.warn("Warning: No Gemini API keys set. Gemini API requests will fail.");
+if (!GEMINI_API_KEY) {
+  console.warn("Warning: No Gemini API key set. Gemini API requests will fail.");
 }
 
-// Function to try multiple API keys until one works
-async function fetchWithFallbackKeys(url: string, options: any): Promise<any> {
-  // Try each API key in sequence until one works
-  let lastError: Error | undefined;
-  
-  console.log(`Starting request with ${GEMINI_API_KEYS.length} available API keys`);
-  
-  for (let i = 0; i < GEMINI_API_KEYS.length; i++) {
-    const apiKey = GEMINI_API_KEYS[i];
-    try {
-      console.log(`Trying API key #${i+1}...`);
-      const modifiedUrl = url.includes('?key=') ? url : `${url}?key=${apiKey}`;
-      const response = await fetch(modifiedUrl, options);
-      if (response.ok) {
-        console.log(`API key #${i+1} succeeded!`);
-        return response;
-      }
-      
-      // If we got a response but it's not an auth error, don't try other keys
-      if (response.status !== 401 && response.status !== 403) {
-        console.log(`API key #${i+1} failed with status ${response.status}, but not trying other keys as it's not an auth error`);
-        return response;
-      }
-      
-      // Otherwise, capture the error and try the next key
-      const errorText = await response.text();
-      lastError = new Error(`Gemini API error (${response.status}): ${errorText}`);
-      console.log(`API key #${i+1} failed with error (${response.status}): ${errorText}`);
-      console.log('Trying next key...');
-    } catch (error) {
-      const err = error as Error;
-      lastError = err;
-      console.log(`API key #${i+1} failed with exception: ${err.message}`);
-      console.log('Trying next key...');
-    }
+// Simplified fetch function using a single API key
+async function fetchWithApiKey(url: string, options: any): Promise<any> {
+  try {
+    // Append API key to URL
+    const modifiedUrl = url.includes('?key=') ? url : `${url}?key=${GEMINI_API_KEY}`;
+    
+    // Make the API request
+    const response = await fetch(modifiedUrl, options);
+    return response;
+  } catch (error) {
+    console.error("Error making API request:", error);
+    throw error;
   }
-  
-  // If all keys failed, throw the last error
-  console.log('All API keys failed!');
-  throw lastError || new Error("All API keys failed");
 }
 
 interface GeminiResponse {
@@ -82,8 +49,8 @@ export async function generateContent(
     // Prepare the prompt with all configuration parameters
     const prompt = constructGenerationPrompt(contentType, writingStyle, contentLength, topic);
     
-    // Make API request with fallback keys
-    const response = await fetchWithFallbackKeys(GEMINI_API_URL, {
+    // Make API request with single API key
+    const response = await fetchWithApiKey(GEMINI_API_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -142,7 +109,7 @@ export async function enhancePrompt(topic: string): Promise<string> {
     Make minimal changes - don't expand it significantly.
     Return only the enhanced prompt text without explanations or quotes.`;
     
-    const response = await fetchWithFallbackKeys(GEMINI_API_URL, {
+    const response = await fetchWithApiKey(GEMINI_API_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
