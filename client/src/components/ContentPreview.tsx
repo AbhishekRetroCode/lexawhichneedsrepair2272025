@@ -57,7 +57,7 @@ const ContentPreview: React.FC<ContentPreviewProps> = ({ content, isGenerating }
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100 h-full min-h-[500px] flex flex-col">
+    <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100 w-full min-h-[400px] flex flex-col">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-lg font-medium text-gray-900">Generated Content</h2>
         <div className="flex space-x-2">

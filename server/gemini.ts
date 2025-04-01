@@ -2,7 +2,7 @@ import { fetch } from "undici";
 
 // Get API key from environment variables with fallback
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || process.env.API_KEY || "";
-const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent";
+const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent";
 
 if (!GEMINI_API_KEY) {
   console.warn("Warning: GEMINI_API_KEY not set. Gemini API requests will fail.");
