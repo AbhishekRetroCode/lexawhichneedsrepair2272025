@@ -1,14 +1,23 @@
 import { fetch } from "undici";
 
-// Use a hardcoded API key
-// Note: In production, you should use environment variables instead of hardcoding API keys
-const HARDCODED_API_KEY = "AIzaSyBmzW4_BRXj2aGvYw0XMu5j3LRzmKqLGQY"; // Your real Gemini API key
-// Force using the hardcoded key for testing
-const GEMINI_API_KEY = HARDCODED_API_KEY;
+// Try to use environment variables first, then fall back to hardcoded key
+// Note: In production, you should always use environment variables
+const HARDCODED_API_KEY = "AIzaSyBmzW4_BRXj2aGvYw0XMu5j3LRzmKqLGQY"; // Fallback key (may not work)
+
+// Priority order: GEMINI_API_KEY > GEMINI_API_KEY_2 > GEMINI_API_KEY_3 > hardcoded key
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY || process.env.GEMINI_API_KEY_2 || 
+                      process.env.GEMINI_API_KEY_3 || HARDCODED_API_KEY;
 const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent";
 
 // Log API key information for troubleshooting
-console.log("Using API key source: Hardcoded API key");
+const apiKeySource = process.env.GEMINI_API_KEY 
+  ? "GEMINI_API_KEY" 
+  : process.env.GEMINI_API_KEY_2 
+    ? "GEMINI_API_KEY_2" 
+    : process.env.GEMINI_API_KEY_3 
+      ? "GEMINI_API_KEY_3" 
+      : "Hardcoded fallback";
+console.log("Using API key source:", apiKeySource);
 console.log("API key present:", GEMINI_API_KEY ? "Yes (length: " + GEMINI_API_KEY.length + ")" : "No");
 
 if (!GEMINI_API_KEY) {
