@@ -94,8 +94,7 @@ const Home = () => {
                 <CardDescription>AI models and content analysis tools</CardDescription>
               </CardHeader>
               <CardContent>
-
-              <div className="space-y-4">
+                <div className="space-y-4">
                 <CollapsibleSection
                   title="AI Model Selection"
                   icon="⚡"
@@ -158,6 +157,7 @@ const Home = () => {
                     </CollapsibleSection>
                   </>
                 )}
+                </div>
               </CardContent>
             </Card>
           </div>
