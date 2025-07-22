@@ -31,11 +31,17 @@ A modern, sleek paragraph generator website that leverages the Gemini API to gen
 
 ## Project Architecture
 - `/client/src` - Frontend React application
+  - `/components/ModelSelector.tsx` - AI provider/model selection interface
+  - `/components/CollapsibleSection.tsx` - Collapsible UI sections
+  - `/components/ConfigurationPanel.tsx` - Content generation configuration
+  - `/components/ContentPreview.tsx` - Generated content display
+  - `/contexts/ThemeContext.tsx` - Theme management
+  - `/index.css` - Writing-inspired theme styles
 - `/server` - Express backend with API routes
-- `/shared` - Shared schemas and types
-- `/server/gemini.ts` - Gemini API integration
-- `/server/routes.ts` - API endpoints for content generation
-- `/server/storage.ts` - Storage interface (if needed)
+  - `/gemini.ts` - Google Gemini API integration
+  - `/providers.ts` - **NEW** Multi-provider AI service layer
+  - `/routes.ts` - API endpoints supporting multiple providers
+- `/shared` - Shared schemas and types with provider support
 
 ## Recent Changes (Migration & Enhancements)
 - [2025-01-22] Successfully migrated from Replit Agent to Replit environment
@@ -50,7 +56,14 @@ A modern, sleek paragraph generator website that leverages the Gemini API to gen
 - [2025-01-22] Enhanced ContentPreview with smooth animations
 - [2025-01-22] Added ContentStats component showing word/character counts
 - [2025-01-22] Improved responsive design for better mobile experience
-- [2025-01-22] Added purple accent colors throughout the interface
+- [2025-01-22] **MAJOR UPDATE**: Writing-inspired UI theme with ink aesthetics
+- [2025-01-22] **NEW**: Collapsible sidebar system with CollapsibleSection component
+- [2025-01-22] **NEW**: Multimodal AI support (Gemini + OpenRouter APIs)
+- [2025-01-22] **NEW**: ModelSelector component with provider/model selection
+- [2025-01-22] **NEW**: Writing fonts (Crimson Text, Playfair Display, Source Serif Pro)
+- [2025-01-22] **NEW**: Vintage paper background with crosshatch patterns
+- [2025-01-22] **NEW**: Amber/orange color scheme replacing purple
+- [2025-01-22] **NEW**: providers.ts for multi-API support architecture
 
 ## Development Setup
 1. Run `npm run dev` to start both frontend and backend

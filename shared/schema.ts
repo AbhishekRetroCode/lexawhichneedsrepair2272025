@@ -22,6 +22,8 @@ export const GenerateContentRequest = z.object({
   writingStyle: z.string(),
   contentLength: z.string(),
   topic: z.string().min(1, "Topic is required"),
+  provider: z.string().optional(),
+  model: z.string().optional(),
 });
 
 export const EnhancePromptRequest = z.object({

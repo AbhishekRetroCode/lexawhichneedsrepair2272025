@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.cdnfonts.com/css/suisse-intl');
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Playfair+Display:wght@400;500;600&family=Source+Serif+Pro:wght@400;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -10,24 +12,61 @@
   }
 
   body {
-    @apply font-sans antialiased text-foreground;
-    background-image: radial-gradient(circle, #d1d1d1 1px, transparent 1px);
-    background-size: 24px 24px;
-    background-color: #f8f9fa;
-    font-family: 'Suisse Int\'l', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    @apply font-serif antialiased text-foreground;
+    background-image: 
+      linear-gradient(45deg, rgba(139, 69, 19, 0.03) 25%, transparent 25%),
+      linear-gradient(-45deg, rgba(139, 69, 19, 0.03) 25%, transparent 25%),
+      radial-gradient(circle at 50% 50%, rgba(210, 180, 140, 0.1) 1px, transparent 1px);
+    background-size: 40px 40px, 40px 40px, 20px 20px;
+    background-color: #faf8f5; /* Vintage paper color */
+    font-family: 'Crimson Text', 'Source Serif Pro', Georgia, serif;
+    color: #2d1810; /* Rich ink color */
   }
   
   :root.dark body {
-    background-image: radial-gradient(circle, #333333 1px, transparent 1px);
-    background-color: #121212;
+    background-image: 
+      linear-gradient(45deg, rgba(139, 69, 19, 0.1) 25%, transparent 25%),
+      linear-gradient(-45deg, rgba(139, 69, 19, 0.1) 25%, transparent 25%),
+      radial-gradient(circle at 50% 50%, rgba(139, 69, 19, 0.2) 1px, transparent 1px);
+    background-size: 40px 40px, 40px 40px, 20px 20px;
+    background-color: #1a1611; /* Dark parchment */
+    color: #f4e5d3; /* Warm light text */
   }
   
   .typewriter-font {
     font-family: 'Courier New', Courier, monospace;
+    letter-spacing: 0.02em;
   }
   
-  .config-panel {
-    font-family: 'Suisse Int\'l', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  .writing-font {
+    font-family: 'Crimson Text', 'Source Serif Pro', Georgia, serif;
+    letter-spacing: 0.01em;
+  }
+  
+  .heading-font {
+    font-family: 'Playfair Display', 'Source Serif Pro', Georgia, serif;
+    letter-spacing: 0.02em;
+  }
+  
+  /* Ink drop animation */
+  .ink-drop {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .ink-drop::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(139, 69, 19, 0.1), transparent);
+    transition: left 0.5s ease;
+  }
+  
+  .ink-drop:hover::before {
+    left: 100%;
   }
 }
 

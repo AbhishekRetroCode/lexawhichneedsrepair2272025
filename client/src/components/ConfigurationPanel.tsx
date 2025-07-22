@@ -15,12 +15,16 @@ interface ConfigurationPanelProps {
   onGenerate: (content: string, contentType: string, writingStyle: string, topic?: string) => void;
   setIsGenerating: (isGenerating: boolean) => void;
   isGenerating: boolean;
+  selectedProvider?: string;
+  selectedModel?: string;
 }
 
 const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
   onGenerate,
   setIsGenerating,
   isGenerating,
+  selectedProvider = "gemini",
+  selectedModel = "gemini-1.5-flash",
 }) => {
   // State for content types and writing styles with custom options
   const [contentTypes, setContentTypes] = useState(extendedContentTypes);
@@ -101,6 +105,8 @@ const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
         writingStyle,
         contentLength: finalContentLength,
         topic,
+        provider: selectedProvider,
+        model: selectedModel,
       });
       
       const data = await response.json();

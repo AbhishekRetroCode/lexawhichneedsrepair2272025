@@ -1,6 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { generateContent, enhancePrompt } from "./gemini";
+import { generateWithProvider } from "./providers";
 import { GenerateContentRequest, EnhancePromptRequest } from "@shared/schema";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -16,8 +17,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
       
-      const { contentType, writingStyle, contentLength, topic } = validatedData.data;
+      const { contentType, writingStyle, contentLength, topic, provider, model } = validatedData.data;
       
+      // If provider and model are specified, use the new provider system
+      if (provider && model) {
+        const generatedContent = await generateWithProvider({
+          topic,
+          contentType,
+          writingStyle,
+          contentLength,
+          provider,
+          model
+        });
+        
+        return res.json({ generatedContent });
+      }
+      
+      // Fallback to original Gemini system for backward compatibility
       const generatedContent = await generateContent(
         contentType,
         writingStyle,

@@ -7,6 +7,8 @@ import ContentPreview from "@/components/ContentPreview";
 import ContentAnalyzer from "@/components/ContentAnalyzer";
 import ContentEnhancer from "@/components/ContentEnhancer";
 import ContentVariations from "@/components/ContentVariations";
+import CollapsibleSection from "@/components/CollapsibleSection";
+import ModelSelector from "@/components/ModelSelector";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
 
@@ -25,6 +27,22 @@ const Home = () => {
   const [activeTab, setActiveTab] = useState("generate");
   const [currentTopic, setCurrentTopic] = useState("");
   const [currentContentType, setCurrentContentType] = useState("paragraph");
+  
+  // Model selection state
+  const [selectedProvider, setSelectedProvider] = useState("gemini");
+  const [selectedModel, setSelectedModel] = useState("gemini-1.5-flash");
+  
+  // Collapsible sections state
+  const [expandedSections, setExpandedSections] = useState({
+    models: true,
+    analyzer: false,
+    enhancer: false,
+    variations: false
+  });
+
+  const toggleSection = (section: string, expanded: boolean) => {
+    setExpandedSections(prev => ({ ...prev, [section]: expanded }));
+  };
 
   const handleContentGenerate = (content: string, contentType: string, writingStyle: string, topic?: string) => {
     setGeneratedContent(content);
@@ -84,6 +102,8 @@ const Home = () => {
                         onGenerate={handleContentGenerate}
                         setIsGenerating={setIsGenerating}
                         isGenerating={isGenerating}
+                        selectedProvider={selectedProvider}
+                        selectedModel={selectedModel}
                       />
                     </div>
                   </ResizablePanel>
@@ -91,24 +111,66 @@ const Home = () => {
                   <ResizableHandle withHandle className="w-2 hover:bg-purple-200 dark:hover:bg-purple-800 transition-colors duration-200" />
                   
                   <ResizablePanel defaultSize={25} minSize={20} maxSize={40} className="p-6">
-                    <div className="space-y-6 h-full overflow-auto pr-2">
-                      <div className="sticky top-0 bg-white dark:bg-gray-900 pb-4 border-b border-gray-200 dark:border-gray-700 z-10">
-                        <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
-                          <span className="mr-2">🔧</span>
-                          Analysis & Tools
+                    <div className="space-y-4 h-full overflow-auto pr-2">
+                      <div className="sticky top-0 bg-white dark:bg-gray-900 pb-4 border-b border-amber-200 dark:border-amber-700 z-10">
+                        <h2 className="text-lg font-semibold text-amber-900 dark:text-amber-100 flex items-center heading-font">
+                          <span className="mr-2">🛠️</span>
+                          Tools & Analysis
                         </h2>
                       </div>
-                      <ContentAnalyzer content={generatedContent} />
-                      <ContentEnhancer 
-                        content={generatedContent} 
-                        onEnhancedContent={(content) => handleContentGenerate(content, "enhanced", "improved")}
-                      />
-                      <ContentVariations
-                        content={generatedContent}
-                        originalTopic={currentTopic}
-                        contentType={currentContentType}
-                        onVariationGenerated={(content, type, style) => handleContentGenerate(content, type, style)}
-                      />
+                      
+                      <CollapsibleSection
+                        title="AI Model Selection"
+                        icon="⚡"
+                        isExpanded={expandedSections.models}
+                        onToggle={(expanded) => toggleSection('models', expanded)}
+                        variant="accent"
+                      >
+                        <ModelSelector
+                          selectedProvider={selectedProvider}
+                          selectedModel={selectedModel}
+                          onProviderChange={setSelectedProvider}
+                          onModelChange={setSelectedModel}
+                        />
+                      </CollapsibleSection>
+
+                      <CollapsibleSection
+                        title="Content Analysis"
+                        icon="📊"
+                        isExpanded={expandedSections.analyzer}
+                        onToggle={(expanded) => toggleSection('analyzer', expanded)}
+                        variant="secondary"
+                      >
+                        <ContentAnalyzer content={generatedContent} />
+                      </CollapsibleSection>
+
+                      <CollapsibleSection
+                        title="Content Enhancement"
+                        icon="🚀"
+                        isExpanded={expandedSections.enhancer}
+                        onToggle={(expanded) => toggleSection('enhancer', expanded)}
+                        variant="secondary"
+                      >
+                        <ContentEnhancer 
+                          content={generatedContent} 
+                          onEnhancedContent={(content) => handleContentGenerate(content, "enhanced", "improved")}
+                        />
+                      </CollapsibleSection>
+
+                      <CollapsibleSection
+                        title="Content Variations"
+                        icon="🎯"
+                        isExpanded={expandedSections.variations}
+                        onToggle={(expanded) => toggleSection('variations', expanded)}
+                        variant="secondary"
+                      >
+                        <ContentVariations
+                          content={generatedContent}
+                          originalTopic={currentTopic}
+                          contentType={currentContentType}
+                          onVariationGenerated={(content, type, style) => handleContentGenerate(content, type, style)}
+                        />
+                      </CollapsibleSection>
                     </div>
                   </ResizablePanel>
                   
