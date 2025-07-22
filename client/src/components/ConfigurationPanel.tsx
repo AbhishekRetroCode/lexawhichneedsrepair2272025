@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
@@ -7,9 +8,10 @@ import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { contentLengths } from "@/lib/constants";
 import { extendedContentTypes, extendedWritingStyles } from "@/lib/extended-options";
+import QuickActions from "./QuickActions";
 
 interface ConfigurationPanelProps {
-  onGenerate: (content: string) => void;
+  onGenerate: (content: string, contentType: string, writingStyle: string) => void;
   setIsGenerating: (isGenerating: boolean) => void;
   isGenerating: boolean;
 }
@@ -45,6 +47,15 @@ const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
   const writingStyleRef = useRef<HTMLDivElement>(null);
   
   const { toast } = useToast();
+
+  // Handle quick action selection
+  const handleQuickAction = (action: { contentType: string; writingStyle: string; prompt: string }) => {
+    setContentType(action.contentType);
+    setWritingStyle(action.writingStyle);
+    setTopic(action.prompt);
+    setShowContentTypeDropdown(false);
+    setShowWritingStyleDropdown(false);
+  };
 
   // Handle clicks outside of dropdowns
   useEffect(() => {
@@ -92,14 +103,14 @@ const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
       });
       
       const data = await response.json();
-      onGenerate(data.generatedContent);
+      onGenerate(data.generatedContent, contentType, writingStyle);
     } catch (error) {
       toast({
         title: "Generation failed",
         description: error instanceof Error ? error.message : "Please try again later.",
         variant: "destructive",
       });
-      onGenerate("");
+      onGenerate("", contentType, writingStyle);
     } finally {
       setIsGenerating(false);
     }
@@ -388,16 +399,32 @@ const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
         </div>
       </div>
       
-      <Button
-        className="w-full"
-        onClick={handleGenerate}
-        disabled={isGenerating || !topic.trim()}
-      >
-        <span>Generate Content</span>
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
-          <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
-        </svg>
-      </Button>
+      {/* Quick Actions */}
+      <div className="mb-6">
+        <QuickActions onQuickAction={handleQuickAction} />
+      </div>
+      
+      <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+        <Button
+          className="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 px-6 text-lg font-medium transition-all duration-200"
+          onClick={handleGenerate}
+          disabled={isGenerating || !topic.trim()}
+        >
+          {isGenerating ? (
+            <>
+              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+              Generating...
+            </>
+          ) : (
+            <>
+              <span>Generate Content</span>
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
+              </svg>
+            </>
+          )}
+        </Button>
+      </motion.div>
     </div>
   );
 };
