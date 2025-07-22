@@ -382,6 +382,11 @@ const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
               className={`content-length-btn ${contentLength === length.value ? 'active' : ''}`}
               onClick={() => setContentLength(length.value)}
               disabled={isGenerating}
+              style={{
+                color: contentLength === length.value ? 'white' : undefined,
+                backgroundColor: contentLength === length.value ? '#f59e0b' : undefined,
+                borderColor: contentLength === length.value ? '#f59e0b' : undefined
+              }}
             >
               {length.label}
             </button>

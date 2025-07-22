@@ -44,10 +44,15 @@ interface OpenRouterRequest {
 async function generateWithOpenRouter(request: OpenRouterRequest): Promise<string> {
   const { topic, contentType, writingStyle, contentLength, model } = request;
   
-  const { getApiKey } = await import('./storage.js');
-  const apiKey = await getApiKey('openrouter');
+  // First check environment variable, then storage
+  let apiKey = process.env.OPENROUTER_API_KEY;
   
-  console.log('🔍 Retrieved OpenRouter API key:', apiKey ? 'Found' : 'Not found');
+  if (!apiKey) {
+    const { getApiKey } = await import('./storage.js');
+    apiKey = await getApiKey('openrouter');
+  }
+  
+  console.log('🔍 OpenRouter API key source:', apiKey ? (process.env.OPENROUTER_API_KEY ? 'Environment' : 'Storage') : 'Not found');
   
   if (!apiKey) {
     throw new Error("OpenRouter API key not configured. Please provide your OpenRouter API key in the application settings or switch to Gemini provider.");
@@ -92,6 +97,12 @@ async function generateWithOpenRouter(request: OpenRouterRequest): Promise<strin
     if (!response.ok) {
       const errorData = await response.text();
       console.error('OpenRouter API Error:', response.status, errorData);
+      
+      // If it's an authentication error, provide a more helpful message
+      if (response.status === 401) {
+        throw new Error(`OpenRouter authentication failed. Please check your API key is valid. The key should start with 'sk-or-v1-'. Get a new key from https://openrouter.ai`);
+      }
+      
       throw new Error(`OpenRouter API error: ${response.status} - ${errorData}`);
     }
 
