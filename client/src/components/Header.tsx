@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { ThemeToggle } from "./ThemeToggle";
 import { useLocation, Link } from "wouter";
 import { Button } from "./ui/button";
-import { Home, Settings } from "lucide-react";
+import { Home, Settings, History } from "lucide-react";
 
 export const Header: React.FC = () => {
   const [location, setLocation] = useLocation();
@@ -32,6 +32,18 @@ export const Header: React.FC = () => {
             <Link to="/">
               <Home className="h-4 w-4 mr-2" />
               Home
+            </Link>
+          </Button>
+          
+          <Button
+            variant="ghost"
+            size="sm"
+            asChild
+            className={location === "/history" ? "bg-accent" : ""}
+          >
+            <Link to="/history">
+              <History className="h-4 w-4 mr-2" />
+              History
             </Link>
           </Button>
 

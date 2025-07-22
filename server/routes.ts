@@ -3,6 +3,7 @@ import { createServer, type Server } from "http";
 import { generateContent, enhancePrompt } from "./gemini";
 import { generateWithProvider } from "./providers";
 import { GenerateContentRequest, EnhancePromptRequest } from "@shared/schema";
+import { saveApiKey, getApiKey, saveToHistory, getHistory } from './storage';
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Generate content endpoint
@@ -110,6 +111,68 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error('Failed to check API key status:', error);
       res.status(500).json({ error: 'Failed to check API key status' });
+    }
+  });
+
+  // Test endpoint
+  app.get("/api/test", (req, res) => {
+    res.json({ message: "Hello from Express!" });
+  });
+
+  // History endpoints
+  app.get("/api/history", async (req, res) => {
+    try {
+      const history = await getHistory();
+      res.json(history.reverse()); // Most recent first
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch history" });
+    }
+  });
+
+  app.delete("/api/history/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const history = await getHistory();
+      const updatedHistory = history.filter(entry => entry.id !== id);
+
+      // Save updated history back
+      const fs = await import('fs/promises');
+      const path = await import('path');
+      const STORAGE_FILE = path.join(process.cwd(), 'storage.json');
+
+      let data: any = {};
+      try {
+        const fileContent = await fs.readFile(STORAGE_FILE, 'utf-8');
+        data = JSON.parse(fileContent);
+      } catch {}
+
+      data.history = updatedHistory;
+      await fs.writeFile(STORAGE_FILE, JSON.stringify(data, null, 2));
+
+      res.json({ success: true });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to delete history entry" });
+    }
+  });
+
+  app.delete("/api/history", async (req, res) => {
+    try {
+      const fs = await import('fs/promises');
+      const path = await import('path');
+      const STORAGE_FILE = path.join(process.cwd(), 'storage.json');
+
+      let data: any = {};
+      try {
+        const fileContent = await fs.readFile(STORAGE_FILE, 'utf-8');
+        data = JSON.parse(fileContent);
+      } catch {}
+
+      data.history = [];
+      await fs.writeFile(STORAGE_FILE, JSON.stringify(data, null, 2));
+
+      res.json({ success: true });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to clear history" });
     }
   });
 
