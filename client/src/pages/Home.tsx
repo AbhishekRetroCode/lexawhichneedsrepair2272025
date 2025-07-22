@@ -9,6 +9,7 @@ import ContentEnhancer from "@/components/ContentEnhancer";
 import ContentVariations from "@/components/ContentVariations";
 import CollapsibleSection from "@/components/CollapsibleSection";
 import ModelSelector from "@/components/ModelSelector";
+import ApiKeyManager from "@/components/ApiKeyManager";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -78,6 +79,8 @@ const Home = () => {
                 isGenerating={isGenerating}
                 selectedProvider={selectedProvider}
                 selectedModel={selectedModel}
+                onProviderChange={setSelectedProvider}
+                onModelChange={setSelectedModel}
               />
             </CardContent>
           </Card>
@@ -97,6 +100,19 @@ const Home = () => {
               />
             </CardContent>
           </Card>
+
+          {/* API Key Management (show only when OpenRouter is selected) */}
+          {selectedProvider === 'openrouter' && (
+            <Card>
+              <CardHeader>
+                <CardTitle>OpenRouter API Key Configuration</CardTitle>
+                <CardDescription>Configure your OpenRouter API key to enable content generation</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ApiKeyManager />
+              </CardContent>
+            </Card>
+          )}
 
           {/* Generated Content */}
           <Card>

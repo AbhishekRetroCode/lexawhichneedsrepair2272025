@@ -17,6 +17,8 @@ interface ConfigurationPanelProps {
   isGenerating: boolean;
   selectedProvider?: string;
   selectedModel?: string;
+  onProviderChange?: (provider: string) => void;
+  onModelChange?: (model: string) => void;
 }
 
 const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
@@ -25,6 +27,8 @@ const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
   isGenerating,
   selectedProvider = "gemini",
   selectedModel = "gemini-1.5-flash",
+  onProviderChange,
+  onModelChange,
 }) => {
   // State for content types and writing styles with custom options
   const [contentTypes, setContentTypes] = useState(extendedContentTypes);
@@ -258,12 +262,15 @@ const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
   const handleDismissError = () => setError(null);
   
   const handleSwitchToGemini = () => {
-    // This would need to be passed down as a prop from the parent component
-    setError(null);
-    toast({
-      title: "Switched to Gemini",
-      description: "Now using Google Gemini for content generation.",
-    });
+    if (onProviderChange && onModelChange) {
+      onProviderChange("gemini");
+      onModelChange("gemini-1.5-flash");
+      setError(null);
+      toast({
+        title: "Switched to Gemini",
+        description: "Now using Google Gemini for content generation.",
+      });
+    }
   };
 
   return (

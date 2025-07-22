@@ -143,28 +143,73 @@
     @apply border-gray-600 bg-gray-800 text-gray-100 focus:border-primary;
   }
   
-  /* Ensure all text elements are visible in dark mode */
+  /* Comprehensive dark mode text visibility fixes */
   .dark {
     color-scheme: dark;
   }
   
-  .dark * {
-    border-color: rgb(75 85 99) !important;
+  /* Text elements - high priority for visibility */
+  .dark label,
+  .dark span:not([class*="bg-"]):not([class*="text-green"]):not([class*="text-red"]):not([class*="text-amber"]),
+  .dark p,
+  .dark div:not([class*="bg-"]),
+  .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
+    color: rgb(243 244 246) !important;
   }
   
-  .dark input,
-  .dark textarea,
-  .dark select,
-  .dark button {
+  /* Form elements */
+  .dark input:not([disabled]),
+  .dark textarea:not([disabled]),
+  .dark select:not([disabled]) {
     color: rgb(243 244 246) !important;
     background-color: rgb(31 41 55) !important;
     border-color: rgb(107 114 128) !important;
   }
   
-  .dark label,
-  .dark span,
-  .dark p,
-  .dark div {
+  .dark input[disabled],
+  .dark textarea[disabled],
+  .dark select[disabled] {
+    color: rgb(156 163 175) !important;
+    background-color: rgb(17 24 39) !important;
+    border-color: rgb(75 85 99) !important;
+  }
+  
+  /* Buttons with proper contrast */
+  .dark button:not([class*="bg-"]):not([class*="text-"]) {
+    color: rgb(243 244 246) !important;
+    background-color: rgb(55 65 81) !important;
+    border-color: rgb(107 114 128) !important;
+  }
+  
+  .dark button:hover:not([class*="bg-"]):not([disabled]) {
+    background-color: rgb(75 85 99) !important;
+  }
+  
+  /* Dropdown and select styling */
+  .dark [role="option"],
+  .dark .dropdown-item {
+    color: rgb(243 244 246) !important;
+    background-color: rgb(31 41 55) !important;
+  }
+  
+  .dark [role="option"]:hover,
+  .dark .dropdown-item:hover {
+    background-color: rgb(55 65 81) !important;
+  }
+  
+  /* Additional text contrast fixes */
+  .dark .card-title,
+  .dark .card-description,
+  .dark .text-muted-foreground {
+    color: rgb(229 231 235) !important;
+  }
+  
+  .dark .text-foreground {
+    color: rgb(248 250 252) !important;
+  }
+  
+  /* Fix specific Radix UI component text visibility */
+  .dark [data-radix-collection-item] {
     color: rgb(243 244 246) !important;
   }
   
