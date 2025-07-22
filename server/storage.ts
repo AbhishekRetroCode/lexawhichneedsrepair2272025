@@ -38,7 +38,7 @@ export class MemStorage implements IStorage {
 
 export const storage = new MemStorage();
 
-import fs from 'fs/promises';
+import { promises as fs } from 'fs';
 import path from 'path';
 
 interface StorageData {

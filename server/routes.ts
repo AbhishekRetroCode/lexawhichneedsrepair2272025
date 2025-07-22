@@ -20,9 +20,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const { contentType, writingStyle, contentLength, topic, provider, model } = validatedData.data;
 
+      let generatedContent: string;
+
       // If provider and model are specified, use the new provider system
       if (provider && model) {
-        const generatedContent = await generateWithProvider({
+        generatedContent = await generateWithProvider({
           topic,
           contentType,
           writingStyle,
@@ -30,17 +32,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
           provider,
           model
         });
-
-        return res.json({ generatedContent });
+      } else {
+        // Fallback to original Gemini system for backward compatibility
+        generatedContent = await generateContent(
+          contentType,
+          writingStyle,
+          contentLength,
+          topic
+        );
       }
 
-      // Fallback to original Gemini system for backward compatibility
-      const generatedContent = await generateContent(
+      // Save to history
+      await saveToHistory({
+        id: Date.now().toString(),
+        content: generatedContent,
+        topic,
         contentType,
         writingStyle,
         contentLength,
-        topic
-      );
+        provider: provider || 'gemini',
+        model: model || 'gemini-1.5-flash',
+        wordCount: generatedContent.split(' ').length
+      });
 
       return res.json({ generatedContent });
     } catch (error) {
@@ -87,11 +100,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ error: 'Invalid API key' });
       }
 
-      // Assuming saveApiKey function exists and can handle provider type
-      // and that it's imported from somewhere in your codebase.
-      // Example: import { saveApiKey } from './api-key-utils';
-      // await saveApiKey(apiKey, provider as 'gemini' | 'openrouter');
-
+      await saveApiKey(apiKey, provider as 'gemini' | 'openrouter');
       res.json({ success: true });
     } catch (error) {
       console.error('Failed to save API key:', error);
@@ -102,12 +111,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get('/api/key-status', async (req, res) => {
     try {
       const { provider = 'gemini' } = req.query;
-      // Assuming getApiKey function exists and can handle provider type
-      // and that it's imported from somewhere in your codebase.
-      // Example: import { getApiKey } from './api-key-utils';
-      // const apiKey = await getApiKey(provider as 'gemini' | 'openrouter');
-      // res.json({ hasKey: !!apiKey });
-      res.json({ hasKey: false }); // Placeholder until getApiKey is implemented
+      const apiKey = await getApiKey(provider as 'gemini' | 'openrouter');
+      res.json({ hasKey: !!apiKey });
     } catch (error) {
       console.error('Failed to check API key status:', error);
       res.status(500).json({ error: 'Failed to check API key status' });
