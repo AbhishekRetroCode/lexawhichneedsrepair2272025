@@ -58,119 +58,50 @@ const Home = () => {
     <div className="min-h-screen">
       <Header />
 
-      <main className="container mx-auto px-4 py-8 max-w-7xl">
-        {/* Top Section: Configuration and Tools Side by Side */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-          {/* Configuration Panel - Takes 2/3 width */}
-          <div className="lg:col-span-2">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center heading-font">
-                  <span className="mr-2">⚙️</span>
-                  Configuration
-                </CardTitle>
-                <CardDescription>Configure your content generation settings</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ConfigurationPanel 
-                  onGenerate={handleContentGenerate}
-                  setIsGenerating={setIsGenerating}
-                  isGenerating={isGenerating}
-                  selectedProvider={selectedProvider}
-                  selectedModel={selectedModel}
-                />
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Tools and Analysis Panel - Takes 1/3 width */}
-          <div className="lg:col-span-1">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center heading-font">
-                  <span className="mr-2">🛠️</span>
-                  Tools & Analysis
-                </CardTitle>
-                <CardDescription>AI models and content analysis tools</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                <CollapsibleSection
-                  title="AI Model Selection"
-                  icon="⚡"
-                  isExpanded={expandedSections.models}
-                  onToggle={(expanded) => toggleSection('models', expanded)}
-                  variant="accent"
-                >
-                  <ModelSelector
-                    selectedProvider={selectedProvider}
-                    selectedModel={selectedModel}
-                    onProviderChange={setSelectedProvider}
-                    onModelChange={setSelectedModel}
-                  />
-                </CollapsibleSection>
-
-                
-
-                {generatedContent && (
-                  <>
-                    <CollapsibleSection
-                      title="Content Analysis"
-                      icon="📊"
-                      isExpanded={expandedSections.analyzer}
-                      onToggle={(expanded) => toggleSection('analyzer', expanded)}
-                      variant="secondary"
-                    >
-                      <ContentAnalyzer content={generatedContent} />
-                    </CollapsibleSection>
-
-                    <CollapsibleSection
-                      title="Content Enhancement"
-                      icon="✨"
-                      isExpanded={expandedSections.enhancer}
-                      onToggle={(expanded) => toggleSection('enhancer', expanded)}
-                      variant="secondary"
-                    >
-                      <ContentEnhancer 
-                        content={generatedContent}
-                        onEnhancedContent={(enhancedContent: string) => setGeneratedContent(enhancedContent)}
-                      />
-                    </CollapsibleSection>
-
-                    <CollapsibleSection
-                      title="Content Variations"
-                      icon="🔄"
-                      isExpanded={expandedSections.variations}
-                      onToggle={(expanded) => toggleSection('variations', expanded)}
-                      variant="secondary"
-                    >
-                      <ContentVariations 
-                        content={generatedContent}
-                        originalTopic={currentTopic}
-                        contentType={contentType}
-                        onVariationGenerated={(variation: string, type: string, style: string) => {
-                          setGeneratedContent(variation);
-                          setContentType(type);
-                          setWritingStyle(style);
-                        }}
-                      />
-                    </CollapsibleSection>
-                  </>
-                )}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+      <main className="container mx-auto px-4 py-8 max-w-4xl">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold heading-font text-foreground mb-2">Content Generator</h1>
+          <p className="text-muted-foreground">Create professional content with AI-powered tools</p>
         </div>
 
-        {/* Bottom Section: Generated Content */}
-        <div className="w-full">
+        <div className="space-y-6">
+          {/* Configuration Section */}
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center heading-font">
-                <span className="mr-2">📄</span>
-                Generated Content
-              </CardTitle>
+              <CardTitle>Configuration</CardTitle>
+              <CardDescription>Configure your content generation settings</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ConfigurationPanel 
+                onGenerate={handleContentGenerate}
+                setIsGenerating={setIsGenerating}
+                isGenerating={isGenerating}
+                selectedProvider={selectedProvider}
+                selectedModel={selectedModel}
+              />
+            </CardContent>
+          </Card>
+
+          {/* AI Model Selection */}
+          <Card>
+            <CardHeader>
+              <CardTitle>AI Model Selection</CardTitle>
+              <CardDescription>Choose your preferred AI provider and model</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ModelSelector
+                selectedProvider={selectedProvider}
+                selectedModel={selectedModel}
+                onProviderChange={setSelectedProvider}
+                onModelChange={setSelectedModel}
+              />
+            </CardContent>
+          </Card>
+
+          {/* Generated Content */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Generated Content</CardTitle>
               <CardDescription>Your AI-generated content will appear here</CardDescription>
             </CardHeader>
             <CardContent>
@@ -180,6 +111,53 @@ const Home = () => {
               />
             </CardContent>
           </Card>
+
+          {/* Content Analysis Tools */}
+          {generatedContent && (
+            <>
+              <Card>
+                <CardHeader>
+                  <CardTitle>Content Analysis</CardTitle>
+                  <CardDescription>Analyze your generated content for insights and improvements</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ContentAnalyzer content={generatedContent} />
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Content Enhancement</CardTitle>
+                  <CardDescription>Enhance and improve your content with AI suggestions</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ContentEnhancer 
+                    content={generatedContent}
+                    onEnhancedContent={(enhancedContent: string) => setGeneratedContent(enhancedContent)}
+                  />
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Content Variations</CardTitle>
+                  <CardDescription>Generate different variations of your content</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ContentVariations 
+                    content={generatedContent}
+                    originalTopic={currentTopic}
+                    contentType={contentType}
+                    onVariationGenerated={(variation: string, type: string, style: string) => {
+                      setGeneratedContent(variation);
+                      setContentType(type);
+                      setWritingStyle(style);
+                    }}
+                  />
+                </CardContent>
+              </Card>
+            </>
+          )}
         </div>
       </main>
 
