@@ -85,4 +85,58 @@
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
   }
+
+  /* Resizable Panel Improvements */
+  [data-panel-group-direction="horizontal"] > [data-panel-resize-handle-enabled] {
+    background: linear-gradient(90deg, 
+      transparent 40%, 
+      rgb(148 163 184) 40%, 
+      rgb(148 163 184) 45%,
+      transparent 45%,
+      transparent 55%,
+      rgb(148 163 184) 55%,
+      rgb(148 163 184) 60%,
+      transparent 60%
+    );
+    transition: all 0.2s ease;
+  }
+
+  [data-panel-group-direction="horizontal"] > [data-panel-resize-handle-enabled]:hover {
+    background: linear-gradient(90deg, 
+      transparent 40%, 
+      rgb(168 85 247) 40%, 
+      rgb(168 85 247) 45%,
+      transparent 45%,
+      transparent 55%,
+      rgb(168 85 247) 55%,
+      rgb(168 85 247) 60%,
+      transparent 60%
+    ) !important;
+  }
+
+  .dark [data-panel-group-direction="horizontal"] > [data-panel-resize-handle-enabled] {
+    background: linear-gradient(90deg, 
+      transparent 40%, 
+      rgb(71 85 105) 40%, 
+      rgb(71 85 105) 45%,
+      transparent 45%,
+      transparent 55%,
+      rgb(71 85 105) 55%,
+      rgb(71 85 105) 60%,
+      transparent 60%
+    );
+  }
+
+  .dark [data-panel-group-direction="horizontal"] > [data-panel-resize-handle-enabled]:hover {
+    background: linear-gradient(90deg, 
+      transparent 40%, 
+      rgb(168 85 247) 40%, 
+      rgb(168 85 247) 45%,
+      transparent 45%,
+      transparent 55%,
+      rgb(168 85 247) 55%,
+      rgb(168 85 247) 60%,
+      transparent 60%
+    ) !important;
+  }
 }

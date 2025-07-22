@@ -73,8 +73,8 @@ const ContentAnalyzer: React.FC<ContentAnalyzerProps> = ({ content }) => {
       transition={{ delay: 0.2 }}
     >
       <Card className="border-gray-200 dark:border-gray-700">
-        <CardHeader>
-          <CardTitle className="text-lg flex items-center justify-between">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-base flex items-center justify-between">
             <div className="flex items-center">
               <span className="mr-2">📊</span>
               Content Analysis
@@ -86,7 +86,7 @@ const ContentAnalyzer: React.FC<ContentAnalyzerProps> = ({ content }) => {
             </Badge>
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-3 pt-0">
           {/* Basic Stats */}
           <div className="grid grid-cols-2 gap-4">
             <div className="text-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">

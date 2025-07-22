@@ -8,6 +8,7 @@ import ContentAnalyzer from "@/components/ContentAnalyzer";
 import ContentEnhancer from "@/components/ContentEnhancer";
 import ContentVariations from "@/components/ContentVariations";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
 
 export interface ContentItem {
   id: string;
@@ -69,40 +70,139 @@ const Home = () => {
             </TabsList>
 
             <TabsContent value="generate" className="space-y-8">
-              <div className="grid grid-cols-1 xl:grid-cols-5 gap-8">
-                <div className="xl:col-span-2 space-y-6">
-                  <ConfigurationPanel 
-                    onGenerate={handleContentGenerate}
-                    setIsGenerating={setIsGenerating}
-                    isGenerating={isGenerating}
-                  />
-                  <ContentAnalyzer content={generatedContent} />
-                  <ContentEnhancer 
-                    content={generatedContent} 
-                    onEnhancedContent={(content) => handleContentGenerate(content, "enhanced", "improved")}
-                  />
-                  <ContentVariations
-                    content={generatedContent}
-                    originalTopic={currentTopic}
-                    contentType={currentContentType}
-                    onVariationGenerated={(content, type, style) => handleContentGenerate(content, type, style)}
-                  />
-                </div>
-                <div className="xl:col-span-3">
-                  <ContentPreview 
-                    content={generatedContent}
-                    isGenerating={isGenerating}
-                  />
+              <div className="hidden lg:block">
+                <ResizablePanelGroup direction="horizontal" className="min-h-[800px] rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+                  <ResizablePanel defaultSize={35} minSize={25} maxSize={50} className="p-6">
+                    <div className="space-y-6 h-full overflow-auto pr-2">
+                      <div className="sticky top-0 bg-white dark:bg-gray-900 pb-4 border-b border-gray-200 dark:border-gray-700 z-10">
+                        <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
+                          <span className="mr-2">⚙️</span>
+                          Configuration
+                        </h2>
+                      </div>
+                      <ConfigurationPanel 
+                        onGenerate={handleContentGenerate}
+                        setIsGenerating={setIsGenerating}
+                        isGenerating={isGenerating}
+                      />
+                    </div>
+                  </ResizablePanel>
+                  
+                  <ResizableHandle withHandle className="w-2 hover:bg-purple-200 dark:hover:bg-purple-800 transition-colors duration-200" />
+                  
+                  <ResizablePanel defaultSize={25} minSize={20} maxSize={40} className="p-6">
+                    <div className="space-y-6 h-full overflow-auto pr-2">
+                      <div className="sticky top-0 bg-white dark:bg-gray-900 pb-4 border-b border-gray-200 dark:border-gray-700 z-10">
+                        <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
+                          <span className="mr-2">🔧</span>
+                          Analysis & Tools
+                        </h2>
+                      </div>
+                      <ContentAnalyzer content={generatedContent} />
+                      <ContentEnhancer 
+                        content={generatedContent} 
+                        onEnhancedContent={(content) => handleContentGenerate(content, "enhanced", "improved")}
+                      />
+                      <ContentVariations
+                        content={generatedContent}
+                        originalTopic={currentTopic}
+                        contentType={currentContentType}
+                        onVariationGenerated={(content, type, style) => handleContentGenerate(content, type, style)}
+                      />
+                    </div>
+                  </ResizablePanel>
+                  
+                  <ResizableHandle withHandle className="w-2 hover:bg-purple-200 dark:hover:bg-purple-800 transition-colors duration-200" />
+                  
+                  <ResizablePanel defaultSize={40} minSize={30} className="p-6">
+                    <div className="h-full overflow-auto">
+                      <div className="sticky top-0 bg-white dark:bg-gray-900 pb-4 border-b border-gray-200 dark:border-gray-700 z-10">
+                        <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
+                          <span className="mr-2">📄</span>
+                          Generated Content
+                        </h2>
+                      </div>
+                      <div className="mt-4">
+                        <ContentPreview 
+                          content={generatedContent}
+                          isGenerating={isGenerating}
+                        />
+                      </div>
+                    </div>
+                  </ResizablePanel>
+                </ResizablePanelGroup>
+              </div>
+              
+              {/* Mobile Layout */}
+              <div className="lg:hidden space-y-8">
+                <div className="grid grid-cols-1 gap-8">
+                  <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+                    <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-6 flex items-center">
+                      <span className="mr-2">⚙️</span>
+                      Configuration
+                    </h2>
+                    <ConfigurationPanel 
+                      onGenerate={handleContentGenerate}
+                      setIsGenerating={setIsGenerating}
+                      isGenerating={isGenerating}
+                    />
+                  </div>
+                  
+                  <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+                    <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-6 flex items-center">
+                      <span className="mr-2">📄</span>
+                      Generated Content
+                    </h2>
+                    <ContentPreview 
+                      content={generatedContent}
+                      isGenerating={isGenerating}
+                    />
+                  </div>
+                  
+                  {generatedContent && (
+                    <div className="space-y-6">
+                      <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+                        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-6 flex items-center">
+                          <span className="mr-2">🔧</span>
+                          Analysis & Tools
+                        </h2>
+                        <div className="space-y-6">
+                          <ContentAnalyzer content={generatedContent} />
+                          <ContentEnhancer 
+                            content={generatedContent} 
+                            onEnhancedContent={(content) => handleContentGenerate(content, "enhanced", "improved")}
+                          />
+                          <ContentVariations
+                            content={generatedContent}
+                            originalTopic={currentTopic}
+                            contentType={currentContentType}
+                            onVariationGenerated={(content, type, style) => handleContentGenerate(content, type, style)}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </TabsContent>
 
-            <TabsContent value="history">
-              <ContentHistory 
-                history={contentHistory} 
-                onSelect={handleSelectFromHistory}
-                onClear={() => setContentHistory([])}
-              />
+            <TabsContent value="history" className="space-y-8">
+              <ResizablePanelGroup direction="horizontal" className="min-h-[800px] rounded-lg border border-gray-200 dark:border-gray-700">
+                <ResizablePanel defaultSize={100} className="p-6">
+                  <div className="h-full overflow-auto">
+                    <div className="sticky top-0 bg-white dark:bg-gray-900 pb-4 border-b border-gray-200 dark:border-gray-700">
+                      <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Content History</h2>
+                    </div>
+                    <div className="mt-4">
+                      <ContentHistory 
+                        history={contentHistory} 
+                        onSelect={handleSelectFromHistory}
+                        onClear={() => setContentHistory([])}
+                      />
+                    </div>
+                  </div>
+                </ResizablePanel>
+              </ResizablePanelGroup>
             </TabsContent>
           </Tabs>
         </motion.div>

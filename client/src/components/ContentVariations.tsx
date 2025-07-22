@@ -114,8 +114,8 @@ const ContentVariations: React.FC<ContentVariationsProps> = ({
       transition={{ delay: 0.4 }}
     >
       <Card className="border-gray-200 dark:border-gray-700">
-        <CardHeader>
-          <CardTitle className="text-lg flex items-center justify-between">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-base flex items-center justify-between">
             <div className="flex items-center">
               <span className="mr-2">🎯</span>
               Content Variations

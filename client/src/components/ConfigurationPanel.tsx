@@ -250,8 +250,7 @@ const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-gray-700 w-full config-panel transition-colors">
-      <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">Configuration</h2>
+    <div className="space-y-4">
       
       <div className="mb-6">
         <Label htmlFor="content-type" className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Content Type</Label>
