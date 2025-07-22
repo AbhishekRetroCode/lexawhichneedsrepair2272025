@@ -127,7 +127,7 @@ const ModelSelector: React.FC<ModelSelectorProps> = ({
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
-                  className="absolute z-20 w-full mt-1 bg-white dark:bg-gray-800 border border-amber-300 dark:border-amber-700 rounded-lg shadow-lg"
+                  className="absolute z-50 w-full mt-1 bg-white dark:bg-gray-800 border border-slate-300 dark:border-slate-700 rounded-lg shadow-xl"
                 >
                   <div className="p-2 border-b border-amber-200 dark:border-amber-700">
                     <Input
@@ -187,7 +187,7 @@ const ModelSelector: React.FC<ModelSelectorProps> = ({
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
-                  className="absolute z-20 w-full mt-1 bg-white dark:bg-gray-800 border border-amber-300 dark:border-amber-700 rounded-lg shadow-lg"
+                  className="absolute z-50 w-full mt-1 bg-white dark:bg-gray-800 border border-slate-300 dark:border-slate-700 rounded-lg shadow-xl"
                 >
                   <div className="p-2 border-b border-amber-200 dark:border-amber-700">
                     <Input

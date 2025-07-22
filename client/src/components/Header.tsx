@@ -1,11 +1,12 @@
 import React from "react";
+import { motion } from "framer-motion";
 import { ThemeToggle } from "./ThemeToggle";
 import { useLocation, Link } from "wouter";
 import { Button } from "./ui/button";
 import { Home, Settings } from "lucide-react";
 
 export const Header: React.FC = () => {
-  const [location] = useLocation();
+  const [location, setLocation] = useLocation();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -46,7 +47,20 @@ export const Header: React.FC = () => {
             </Link>
           </Button>
 
-          <ThemeToggle />
+          <div className="flex items-center space-x-4">
+            {location !== '/' && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setLocation('/')}
+                className="flex items-center space-x-2"
+              >
+                <span>🏠</span>
+                <span>Home</span>
+              </Button>
+            )}
+            <ThemeToggle />
+          </div>
         </div>
       </div>
     </header>

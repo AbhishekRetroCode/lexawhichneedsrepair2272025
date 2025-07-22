@@ -67,10 +67,8 @@
   }
 
   body {
-    @apply font-serif antialiased text-foreground;
-    background-image: radial-gradient(circle, #cbd5e1 1px, transparent 1px);
-    background-size: 24px 24px;
-    background-color: #ffffff;
+    @apply font-serif antialiased text-foreground dot-grid;
+    background-color: #f8fafc;
     font-family: 'Crimson Text', 'Source Serif Pro', Georgia, serif;
     color: #1e293b;
   }
@@ -78,7 +76,7 @@
   :root.dark body {
     background-image: radial-gradient(circle, #374151 1px, transparent 1px);
     background-size: 24px 24px;
-    background-color: #111827;
+    background-color: #0f172a;
     color: #e2e8f0;
   }
   
