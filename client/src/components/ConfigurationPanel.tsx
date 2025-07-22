@@ -383,9 +383,11 @@ const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
               onClick={() => setContentLength(length.value)}
               disabled={isGenerating}
               style={{
-                color: contentLength === length.value ? 'white' : undefined,
-                backgroundColor: contentLength === length.value ? '#f59e0b' : undefined,
-                borderColor: contentLength === length.value ? '#f59e0b' : undefined
+                color: contentLength === length.value ? 'white' : 'rgb(243, 244, 246)',
+                backgroundColor: contentLength === length.value ? '#f59e0b' : 'rgb(31, 41, 55)',
+                borderColor: contentLength === length.value ? '#f59e0b' : 'rgb(107, 114, 128)',
+                borderWidth: '1px',
+                borderStyle: 'solid'
               }}
             >
               {length.label}

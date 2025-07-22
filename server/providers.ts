@@ -45,7 +45,7 @@ async function generateWithOpenRouter(request: OpenRouterRequest): Promise<strin
   const { topic, contentType, writingStyle, contentLength, model } = request;
   
   // First check environment variable, then storage
-  let apiKey = process.env.OPENROUTER_API_KEY;
+  let apiKey: string | null = process.env.OPENROUTER_API_KEY || null;
   
   if (!apiKey) {
     const { getApiKey } = await import('./storage.js');
