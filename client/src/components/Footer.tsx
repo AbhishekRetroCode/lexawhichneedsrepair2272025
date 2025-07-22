@@ -21,7 +21,7 @@ const Footer: React.FC = () => {
           </div>
           <div className="mt-8 md:mt-0">
             <p className="text-center text-sm text-gray-500 md:text-right">
-              &copy; {new Date().getFullYear()} Lexa by Quzard. All rights reserved.
+              &copy; {new Date().getFullYear()} Writtus by Cripticle. All rights reserved.
             </p>
           </div>
         </div>

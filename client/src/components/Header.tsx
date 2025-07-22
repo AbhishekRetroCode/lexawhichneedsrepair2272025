@@ -1,38 +1,55 @@
 import React from "react";
 import { ThemeToggle } from "./ThemeToggle";
+import { useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { Button } from "./ui/button";
+import { HomeIcon, SettingsIcon } from "@radix-ui/react-icons";
 
-const Header: React.FC = () => {
+export const Header: React.FC = () => {
+  const [location] = useLocation();
+
   return (
-    <header className="w-full bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 shadow-lg backdrop-blur-sm sticky top-0 z-50 transition-all border-b-2 border-blue-200 dark:border-blue-800">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center py-5">
-          <div className="flex items-center">
-            <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-lg flex items-center justify-center shadow-lg relative ink-drop">
-                <span className="text-white font-bold text-xl heading-font">W</span>
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold text-blue-900 dark:text-blue-100 heading-font">
-                  Writtus
-                </h1>
-                <p className="text-sm text-blue-700 dark:text-blue-300 font-medium italic writing-font">
-                  Powered by Cripticle
-                </p>
-              </div>
-            </div>
-          </div>
-          
-          <div className="flex items-center space-x-6">
-            <div className="hidden md:flex items-center space-x-2 text-blue-800 dark:text-blue-200">
-              <span className="text-xl">🖋️</span>
-              <span className="text-sm writing-font italic font-medium">Where Ideas Flow Like Ink</span>
-            </div>
-            <ThemeToggle />
-          </div>
+    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container flex h-16 items-center justify-between px-4">
+        <div className="flex items-center space-x-4">
+          <Link to="/">
+            <h1 className="text-2xl font-bold heading-font text-primary cursor-pointer hover:text-primary/80 transition-colors">
+              Writtus
+            </h1>
+          </Link>
+          <span className="text-sm text-muted-foreground">
+            Powered by Cripticle
+          </span>
+        </div>
+
+        <div className="flex items-center space-x-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            asChild
+            className={location.pathname === "/" ? "bg-accent" : ""}
+          >
+            <Link to="/">
+              <HomeIcon className="h-4 w-4 mr-2" />
+              Home
+            </Link>
+          </Button>
+
+          <Button
+            variant="ghost"
+            size="sm"
+            asChild
+            className={location.pathname === "/settings" ? "bg-accent" : ""}
+          >
+            <Link to="/settings">
+              <SettingsIcon className="h-4 w-4 mr-2" />
+              Settings
+            </Link>
+          </Button>
+
+          <ThemeToggle />
         </div>
       </div>
     </header>
   );
 };
-
-export default Header;

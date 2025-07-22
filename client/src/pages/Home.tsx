@@ -4,12 +4,11 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ConfigurationPanel from "@/components/ConfigurationPanel";
 import ContentPreview from "@/components/ContentPreview";
-import ContentAnalyzer from "@/components/ContentAnalyzer";
-import ContentEnhancer from "@/components/ContentEnhancer";
-import ContentVariations from "@/components/ContentVariations";
+import { ContentAnalyzer } from "@/components/ContentAnalyzer";
+import { ContentEnhancer } from "@/components/ContentEnhancer";
+import { ContentVariations } from "@/components/ContentVariations";
 import CollapsibleSection from "@/components/CollapsibleSection";
 import ModelSelector from "@/components/ModelSelector";
-import QuickActions from "@/components/QuickActions";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export interface ContentItem {
@@ -102,15 +101,7 @@ const Home = () => {
                   />
                 </CollapsibleSection>
 
-                <CollapsibleSection
-                  title="Quick Actions"
-                  icon="⚡"
-                  isExpanded={expandedSections.quickActions}
-                  onToggle={(expanded) => toggleSection('quickActions', expanded)}
-                  variant="default"
-                >
-                  <QuickActions onQuickAction={handleQuickAction} />
-                </CollapsibleSection>
+                
 
                 {generatedContent && (
                   <>

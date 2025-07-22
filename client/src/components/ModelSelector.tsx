@@ -50,9 +50,13 @@ const ModelSelector: React.FC<ModelSelectorProps> = ({
     provider.name.toLowerCase().includes(providerSearch.toLowerCase())
   );
 
-  const filteredModels = availableModels.filter(model =>
-    model.toLowerCase().includes(modelSearch.toLowerCase())
-  );
+  const filteredModels = availableModels.filter((model) => {
+    if (!modelSearch.trim()) return true;
+    const searchTerm = modelSearch.toLowerCase();
+    return (
+      model.toLowerCase().includes(searchTerm)
+    );
+  });
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
