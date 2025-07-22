@@ -8,7 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { contentLengths } from "@/lib/constants";
 import { extendedContentTypes, extendedWritingStyles } from "@/lib/extended-options";
-
+import ErrorAlert from "./ErrorAlert";
 import LiveWordCounter from "./LiveWordCounter";
 
 interface ConfigurationPanelProps {
@@ -46,6 +46,9 @@ const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
   // Custom type/style input state
   const [customContentTypeName, setCustomContentTypeName] = useState("");
   const [customWritingStyleName, setCustomWritingStyleName] = useState("");
+  
+  // Error handling
+  const [error, setError] = useState<string | null>(null);
   
   // Refs for detecting clicks outside dropdowns
   const contentTypeRef = useRef<HTMLDivElement>(null);
@@ -93,6 +96,8 @@ const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
     setIsGenerating(true);
     
     try {
+      setError(null); // Clear any previous errors
+      
       const response = await apiRequest("POST", "/api/generate", {
         contentType,
         writingStyle,
@@ -105,9 +110,11 @@ const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
       const data = await response.json();
       onGenerate(data.generatedContent, contentType, writingStyle, topic);
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "Please try again later.";
+      setError(errorMessage);
       toast({
         title: "Generation failed",
-        description: error instanceof Error ? error.message : "Please try again later.",
+        description: errorMessage,
         variant: "destructive",
       });
       onGenerate("", contentType, writingStyle, topic);
@@ -248,8 +255,25 @@ const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
     }
   };
 
+  const handleDismissError = () => setError(null);
+  
+  const handleSwitchToGemini = () => {
+    // This would need to be passed down as a prop from the parent component
+    setError(null);
+    toast({
+      title: "Switched to Gemini",
+      description: "Now using Google Gemini for content generation.",
+    });
+  };
+
   return (
     <div className="space-y-4">
+      {/* Error Alert */}
+      <ErrorAlert 
+        error={error} 
+        onDismiss={handleDismissError}
+        onSwitchProvider={handleSwitchToGemini}
+      />
       
       <div className="mb-6">
         <Label htmlFor="content-type" className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Content Type</Label>

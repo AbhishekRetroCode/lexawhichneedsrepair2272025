@@ -46,7 +46,7 @@ async function generateWithOpenRouter(request: OpenRouterRequest): Promise<strin
   
   const apiKey = process.env.OPENROUTER_API_KEY;
   if (!apiKey) {
-    throw new Error("OpenRouter API key not found. Please set OPENROUTER_API_KEY environment variable in your Replit Secrets.");
+    throw new Error("OpenRouter API key not configured. Please provide your OpenRouter API key in the application settings or switch to Gemini provider.");
   }
 
   // Create enhanced prompt based on content requirements

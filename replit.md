@@ -54,6 +54,8 @@ A modern, sleek paragraph generator website that leverages the Gemini API to gen
 - [2025-01-22] **NEW**: LoadingSpinner component with better animations
 - [2025-01-22] **UI IMPROVEMENTS**: Updated color scheme from purple to amber/orange throughout
 - [2025-01-22] **FEATURE**: Custom model support for OpenRouter provider
+- [2025-01-22] **ENHANCED**: Error handling with ErrorAlert component for API key issues
+- [2025-01-22] **COMPREHENSIVE DARK MODE FIX**: All text elements now properly visible in dark mode
 - [2025-01-22] Enhanced UI with dynamic tabs: Generate, History, Templates
 - [2025-01-22] Added content history tracking (last 10 generated items)
 - [2025-01-22] Implemented content templates for quick start

@@ -119,11 +119,11 @@
   
   /* For content length buttons */
   .content-length-btn {
-    @apply px-3 py-1.5 rounded-md text-sm font-medium border border-gray-200 bg-white transition-all;
+    @apply px-3 py-1.5 rounded-md text-sm font-medium border border-gray-200 bg-white text-gray-900 transition-all;
   }
   
   .dark .content-length-btn {
-    @apply border-gray-700 bg-gray-700 text-gray-200;
+    @apply border-gray-600 bg-gray-800 text-gray-100 hover:bg-gray-700;
   }
   
   .content-length-btn.active {
@@ -136,11 +136,36 @@
   }
   
   .search-input {
-    @apply w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary;
+    @apply w-full border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-900 bg-white focus:outline-none focus:ring-1 focus:ring-primary;
   }
   
   .dark .search-input {
-    @apply border-gray-600 bg-gray-800 text-white focus:border-primary;
+    @apply border-gray-600 bg-gray-800 text-gray-100 focus:border-primary;
+  }
+  
+  /* Ensure all text elements are visible in dark mode */
+  .dark {
+    color-scheme: dark;
+  }
+  
+  .dark * {
+    border-color: rgb(75 85 99) !important;
+  }
+  
+  .dark input,
+  .dark textarea,
+  .dark select,
+  .dark button {
+    color: rgb(243 244 246) !important;
+    background-color: rgb(31 41 55) !important;
+    border-color: rgb(107 114 128) !important;
+  }
+  
+  .dark label,
+  .dark span,
+  .dark p,
+  .dark div {
+    color: rgb(243 244 246) !important;
   }
   
   .max-h-60 {
