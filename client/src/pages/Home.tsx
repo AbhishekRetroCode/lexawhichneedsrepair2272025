@@ -4,6 +4,9 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ConfigurationPanel from "@/components/ConfigurationPanel";
 import ContentPreview from "@/components/ContentPreview";
+import ContentAnalyzer from "@/components/ContentAnalyzer";
+import ContentEnhancer from "@/components/ContentEnhancer";
+import ContentVariations from "@/components/ContentVariations";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export interface ContentItem {
@@ -19,9 +22,13 @@ const Home = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [contentHistory, setContentHistory] = useState<ContentItem[]>([]);
   const [activeTab, setActiveTab] = useState("generate");
+  const [currentTopic, setCurrentTopic] = useState("");
+  const [currentContentType, setCurrentContentType] = useState("paragraph");
 
-  const handleContentGenerate = (content: string, contentType: string, writingStyle: string) => {
+  const handleContentGenerate = (content: string, contentType: string, writingStyle: string, topic?: string) => {
     setGeneratedContent(content);
+    if (topic) setCurrentTopic(topic);
+    setCurrentContentType(contentType);
     
     // Add to history
     if (content.trim()) {
@@ -52,25 +59,33 @@ const Home = () => {
           className="w-full"
         >
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-3 mb-8">
+            <TabsList className="grid w-full grid-cols-2 mb-8">
               <TabsTrigger value="generate" className="text-sm font-medium">
                 Generate Content
               </TabsTrigger>
               <TabsTrigger value="history" className="text-sm font-medium">
                 History ({contentHistory.length})
               </TabsTrigger>
-              <TabsTrigger value="templates" className="text-sm font-medium">
-                Templates
-              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="generate" className="space-y-8">
               <div className="grid grid-cols-1 xl:grid-cols-5 gap-8">
-                <div className="xl:col-span-2">
+                <div className="xl:col-span-2 space-y-6">
                   <ConfigurationPanel 
                     onGenerate={handleContentGenerate}
                     setIsGenerating={setIsGenerating}
                     isGenerating={isGenerating}
+                  />
+                  <ContentAnalyzer content={generatedContent} />
+                  <ContentEnhancer 
+                    content={generatedContent} 
+                    onEnhancedContent={(content) => handleContentGenerate(content, "enhanced", "improved")}
+                  />
+                  <ContentVariations
+                    content={generatedContent}
+                    originalTopic={currentTopic}
+                    contentType={currentContentType}
+                    onVariationGenerated={(content, type, style) => handleContentGenerate(content, type, style)}
                   />
                 </div>
                 <div className="xl:col-span-3">
@@ -88,10 +103,6 @@ const Home = () => {
                 onSelect={handleSelectFromHistory}
                 onClear={() => setContentHistory([])}
               />
-            </TabsContent>
-
-            <TabsContent value="templates">
-              <ContentTemplates onApplyTemplate={handleContentGenerate} />
             </TabsContent>
           </Tabs>
         </motion.div>
@@ -168,107 +179,6 @@ const ContentHistory = ({ history, onSelect, onClear }: ContentHistoryProps) => 
   );
 };
 
-// Content Templates Component
-interface ContentTemplatesProps {
-  onApplyTemplate: (content: string, contentType: string, writingStyle: string) => void;
-}
 
-const ContentTemplates = ({ onApplyTemplate }: ContentTemplatesProps) => {
-  const templates = [
-    {
-      id: "blog-intro",
-      name: "Blog Post Introduction",
-      contentType: "blogPost",
-      writingStyle: "engaging",
-      description: "Create compelling blog post introductions",
-      example: "Write an engaging introduction for a blog post about sustainable living"
-    },
-    {
-      id: "product-desc",
-      name: "Product Description",
-      contentType: "productDescription",
-      writingStyle: "persuasive",
-      description: "Professional product descriptions that convert",
-      example: "Create a compelling product description for eco-friendly water bottle"
-    },
-    {
-      id: "social-media",
-      name: "Social Media Post",
-      contentType: "socialMediaPost",
-      writingStyle: "casual",
-      description: "Engaging social media content",
-      example: "Write an Instagram post about morning coffee routine"
-    },
-    {
-      id: "email-marketing",
-      name: "Marketing Email",
-      contentType: "email",
-      writingStyle: "professional",
-      description: "Professional marketing emails",
-      example: "Create a welcome email for new newsletter subscribers"
-    },
-    {
-      id: "press-release",
-      name: "Press Release",
-      contentType: "pressRelease",
-      writingStyle: "formal",
-      description: "Official press release format",
-      example: "Write a press release for company's new product launch"
-    },
-    {
-      id: "story-creative",
-      name: "Creative Story",
-      contentType: "story",
-      writingStyle: "creative",
-      description: "Engaging creative storytelling",
-      example: "Write a short story about time travel adventure"
-    }
-  ];
-
-  return (
-    <div className="space-y-6">
-      <div className="text-center">
-        <h2 className="text-2xl font-semibold mb-2">Content Templates</h2>
-        <p className="text-gray-600 dark:text-gray-400">Quick start templates for common content types</p>
-      </div>
-      
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {templates.map((template) => (
-          <motion.div
-            key={template.id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            whileHover={{ scale: 1.02 }}
-            className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 hover:shadow-lg transition-all"
-          >
-            <div className="flex items-start justify-between mb-4">
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white">{template.name}</h3>
-              <span className="text-xs bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300 px-2 py-1 rounded-full">
-                {template.contentType}
-              </span>
-            </div>
-            
-            <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">{template.description}</p>
-            
-            <div className="bg-gray-50 dark:bg-gray-700 rounded p-3 mb-4">
-              <p className="text-sm text-gray-700 dark:text-gray-300 italic">
-                "{template.example}"
-              </p>
-            </div>
-            
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => onApplyTemplate(template.example, template.contentType, template.writingStyle)}
-              className="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded-lg transition-colors text-sm font-medium"
-            >
-              Use Template
-            </motion.button>
-          </motion.div>
-        ))}
-      </div>
-    </div>
-  );
-};
 
 export default Home;

@@ -9,9 +9,10 @@ import { apiRequest } from "@/lib/queryClient";
 import { contentLengths } from "@/lib/constants";
 import { extendedContentTypes, extendedWritingStyles } from "@/lib/extended-options";
 import QuickActions from "./QuickActions";
+import LiveWordCounter from "./LiveWordCounter";
 
 interface ConfigurationPanelProps {
-  onGenerate: (content: string, contentType: string, writingStyle: string) => void;
+  onGenerate: (content: string, contentType: string, writingStyle: string, topic?: string) => void;
   setIsGenerating: (isGenerating: boolean) => void;
   isGenerating: boolean;
 }
@@ -103,14 +104,14 @@ const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
       });
       
       const data = await response.json();
-      onGenerate(data.generatedContent, contentType, writingStyle);
+      onGenerate(data.generatedContent, contentType, writingStyle, topic);
     } catch (error) {
       toast({
         title: "Generation failed",
         description: error instanceof Error ? error.message : "Please try again later.",
         variant: "destructive",
       });
-      onGenerate("", contentType, writingStyle);
+      onGenerate("", contentType, writingStyle, topic);
     } finally {
       setIsGenerating(false);
     }
@@ -375,8 +376,8 @@ const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
         )}
       </div>
       
-      <div className="mb-6">
-        <Label htmlFor="content-topic" className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Content/Topic</Label>
+      <div className="mb-6 space-y-4">
+        <Label htmlFor="content-topic" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Content/Topic</Label>
         <div className="relative">
           <Textarea
             id="content-topic"
@@ -389,7 +390,7 @@ const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
           />
           <Button
             id="enhance-prompt"
-            className="absolute bottom-3 right-3 text-xs px-3 py-1.5 bg-primary/10 text-primary hover:bg-primary/20 transition-colors font-medium h-auto dark:bg-primary/20 dark:hover:bg-primary/30"
+            className="absolute bottom-3 right-3 text-xs px-3 py-1.5 bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300 hover:bg-purple-200 dark:hover:bg-purple-800 transition-colors font-medium h-auto"
             onClick={handleEnhancePrompt}
             disabled={isGenerating || !topic.trim()}
             variant="ghost"
@@ -397,6 +398,11 @@ const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
             Enhance Prompt
           </Button>
         </div>
+        
+        {/* Live Word Counter */}
+        {topic.trim() && (
+          <LiveWordCounter text={topic} targetLength={contentLength} />
+        )}
       </div>
       
       {/* Quick Actions */}
