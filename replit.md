@@ -44,11 +44,16 @@ A modern, sleek paragraph generator website that leverages the Gemini API to gen
 - `/shared` - Shared schemas and types with provider support
 
 ## Recent Changes (Migration & Enhancements)
-- [2025-01-22] Successfully migrated from Replit Agent to Replit environment
+- [2025-01-22] **MIGRATION COMPLETE**: Successfully migrated from Replit Agent to Replit environment
 - [2025-01-22] Verified all dependencies are installed and working
 - [2025-01-22] Server running successfully at http://localhost:5000
 - [2025-01-22] Gemini API integration confirmed working with secure API key
 - [2025-01-22] Frontend and backend communication established
+- [2025-01-22] **FIXED**: Dark mode text visibility issues in CSS variables
+- [2025-01-22] **ENHANCED**: ModelSelector with custom model input for OpenRouter
+- [2025-01-22] **NEW**: LoadingSpinner component with better animations
+- [2025-01-22] **UI IMPROVEMENTS**: Updated color scheme from purple to amber/orange throughout
+- [2025-01-22] **FEATURE**: Custom model support for OpenRouter provider
 - [2025-01-22] Enhanced UI with dynamic tabs: Generate, History, Templates
 - [2025-01-22] Added content history tracking (last 10 generated items)
 - [2025-01-22] Implemented content templates for quick start
@@ -62,7 +67,6 @@ A modern, sleek paragraph generator website that leverages the Gemini API to gen
 - [2025-01-22] **NEW**: ModelSelector component with provider/model selection
 - [2025-01-22] **NEW**: Writing fonts (Crimson Text, Playfair Display, Source Serif Pro)
 - [2025-01-22] **NEW**: Vintage paper background with crosshatch patterns
-- [2025-01-22] **NEW**: Amber/orange color scheme replacing purple
 - [2025-01-22] **NEW**: providers.ts for multi-API support architecture
 
 ## Development Setup

@@ -25,6 +25,8 @@ const ModelSelector: React.FC<ModelSelectorProps> = ({
   const [showModelDropdown, setShowModelDropdown] = useState(false);
   const [providerSearch, setProviderSearch] = useState("");
   const [modelSearch, setModelSearch] = useState("");
+  const [customModel, setCustomModel] = useState("");
+  const [showCustomModel, setShowCustomModel] = useState(false);
 
   const providerRef = useRef<HTMLDivElement>(null);
   const modelRef = useRef<HTMLDivElement>(null);
@@ -33,14 +35,19 @@ const ModelSelector: React.FC<ModelSelectorProps> = ({
     {
       id: "gemini",
       name: "Google Gemini",
+      icon: "🧠",
       models: ["gemini-1.5-pro", "gemini-1.5-flash", "gemini-1.0-pro"]
     },
     {
       id: "openai", 
       name: "OpenAI",
+      icon: "🤖",
       models: ["gpt-4", "gpt-4-turbo", "gpt-3.5-turbo"]
     },
-    ...openRouterProviders
+    ...openRouterProviders.map(provider => ({
+      ...provider,
+      icon: "🌐"
+    }))
   ];
 
   const currentProvider = providers.find(p => p.id === selectedProvider);
@@ -200,6 +207,23 @@ const ModelSelector: React.FC<ModelSelectorProps> = ({
                     />
                   </div>
                   <div className="max-h-48 overflow-y-auto">
+                    {selectedProvider === "openrouter" && (
+                      <button
+                        onClick={() => {
+                          setShowCustomModel(true);
+                          setShowModelDropdown(false);
+                        }}
+                        className="w-full p-3 text-left hover:bg-amber-50 dark:hover:bg-amber-900/20 border-b border-amber-200 dark:border-amber-700"
+                      >
+                        <div className="flex items-center space-x-2">
+                          <span className="text-lg">✨</span>
+                          <div>
+                            <div className="font-medium text-sm">Add Custom Model</div>
+                            <div className="text-xs text-amber-600 dark:text-amber-400">Enter any OpenRouter model</div>
+                          </div>
+                        </div>
+                      </button>
+                    )}
                     {filteredModels.map((model) => (
                       <button
                         key={model}
@@ -218,11 +242,82 @@ const ModelSelector: React.FC<ModelSelectorProps> = ({
           </div>
         </div>
 
+        {/* Custom Model Input */}
+        <AnimatePresence>
+          {showCustomModel && selectedProvider === "openrouter" && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              className="space-y-2"
+            >
+              <Label className="text-sm font-medium text-amber-900 dark:text-amber-200">
+                Custom OpenRouter Model
+              </Label>
+              <div className="flex gap-2">
+                <Input
+                  type="text"
+                  placeholder="e.g., anthropic/claude-3.5-sonnet"
+                  value={customModel}
+                  onChange={(e) => setCustomModel(e.target.value)}
+                  className="border-amber-300 dark:border-amber-700 flex-1"
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter' && customModel.trim()) {
+                      onModelChange(customModel.trim());
+                      setCustomModel("");
+                      setShowCustomModel(false);
+                    }
+                  }}
+                />
+                <Button
+                  onClick={() => {
+                    if (customModel.trim()) {
+                      onModelChange(customModel.trim());
+                      setCustomModel("");
+                      setShowCustomModel(false);
+                    }
+                  }}
+                  disabled={!customModel.trim()}
+                  className="bg-amber-600 hover:bg-amber-700 text-white"
+                  size="sm"
+                >
+                  Add
+                </Button>
+                <Button
+                  onClick={() => {
+                    setShowCustomModel(false);
+                    setCustomModel("");
+                  }}
+                  variant="outline"
+                  size="sm"
+                >
+                  Cancel
+                </Button>
+              </div>
+              <div className="text-xs text-amber-600 dark:text-amber-400">
+                Enter the full model name as listed on OpenRouter (e.g., "anthropic/claude-3.5-sonnet")
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         {/* Model Info */}
         {selectedModel && (
-          <div className="text-xs text-amber-700 dark:text-amber-300 bg-amber-100 dark:bg-amber-900/30 p-2 rounded">
-            <strong>Selected:</strong> {currentProvider?.name} • {selectedModel}
-          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-xs text-amber-700 dark:text-amber-300 bg-amber-100 dark:bg-amber-900/30 p-3 rounded-lg border border-amber-200 dark:border-amber-800"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <strong>Selected:</strong> {currentProvider?.name} • {selectedModel}
+              </div>
+              <div className="flex items-center space-x-1">
+                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                <span className="text-green-600 dark:text-green-400 font-medium">Ready</span>
+              </div>
+            </div>
+          </motion.div>
         )}
       </CardContent>
     </Card>
