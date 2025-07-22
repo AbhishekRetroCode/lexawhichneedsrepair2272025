@@ -8,7 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { contentLengths } from "@/lib/constants";
 import { extendedContentTypes, extendedWritingStyles } from "@/lib/extended-options";
-import QuickActions from "./QuickActions";
+
 import LiveWordCounter from "./LiveWordCounter";
 
 interface ConfigurationPanelProps {
@@ -53,14 +53,7 @@ const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
   
   const { toast } = useToast();
 
-  // Handle quick action selection
-  const handleQuickAction = (action: { contentType: string; writingStyle: string; prompt: string }) => {
-    setContentType(action.contentType);
-    setWritingStyle(action.writingStyle);
-    setTopic(action.prompt);
-    setShowContentTypeDropdown(false);
-    setShowWritingStyleDropdown(false);
-  };
+  
 
   // Handle clicks outside of dropdowns
   useEffect(() => {
@@ -410,10 +403,7 @@ const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
         )}
       </div>
       
-      {/* Quick Actions */}
-      <div className="mb-6">
-        <QuickActions onQuickAction={handleQuickAction} />
-      </div>
+      
       
       <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
         <Button

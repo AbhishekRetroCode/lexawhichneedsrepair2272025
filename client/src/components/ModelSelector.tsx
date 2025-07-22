@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { openRouterModels, openRouterProviders } from "@/lib/openrouter-config";
 
 interface ModelSelectorProps {
   selectedProvider: string;
@@ -24,31 +25,22 @@ const ModelSelector: React.FC<ModelSelectorProps> = ({
   const [showModelDropdown, setShowModelDropdown] = useState(false);
   const [providerSearch, setProviderSearch] = useState("");
   const [modelSearch, setModelSearch] = useState("");
-  
+
   const providerRef = useRef<HTMLDivElement>(null);
   const modelRef = useRef<HTMLDivElement>(null);
 
   const providers = [
-    { 
-      id: "gemini", 
-      name: "Google Gemini", 
-      icon: "🔮",
+    {
+      id: "gemini",
+      name: "Google Gemini",
       models: ["gemini-1.5-pro", "gemini-1.5-flash", "gemini-1.0-pro"]
     },
-    { 
-      id: "openrouter", 
-      name: "OpenRouter", 
-      icon: "🌐",
-      models: [
-        "anthropic/claude-3-sonnet",
-        "anthropic/claude-3-haiku", 
-        "openai/gpt-4",
-        "openai/gpt-3.5-turbo",
-        "meta-llama/llama-3-70b",
-        "mistralai/mistral-7b-instruct",
-        "google/gemma-7b-it"
-      ]
-    }
+    {
+      id: "openai", 
+      name: "OpenAI",
+      models: ["gpt-4", "gpt-4-turbo", "gpt-3.5-turbo"]
+    },
+    ...openRouterProviders
   ];
 
   const currentProvider = providers.find(p => p.id === selectedProvider);
@@ -80,7 +72,7 @@ const ModelSelector: React.FC<ModelSelectorProps> = ({
     onProviderChange(providerId);
     setShowProviderDropdown(false);
     setProviderSearch("");
-    
+
     // Auto-select first model when provider changes
     const provider = providers.find(p => p.id === providerId);
     if (provider && provider.models.length > 0) {
@@ -124,7 +116,7 @@ const ModelSelector: React.FC<ModelSelectorProps> = ({
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </Button>
-            
+
             <AnimatePresence>
               {showProviderDropdown && (
                 <motion.div
@@ -184,7 +176,7 @@ const ModelSelector: React.FC<ModelSelectorProps> = ({
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </Button>
-            
+
             <AnimatePresence>
               {showModelDropdown && currentProvider && (
                 <motion.div

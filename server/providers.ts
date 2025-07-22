@@ -46,7 +46,7 @@ async function generateWithOpenRouter(request: OpenRouterRequest): Promise<strin
   
   const apiKey = process.env.OPENROUTER_API_KEY;
   if (!apiKey) {
-    throw new Error("OpenRouter API key not found. Please set OPENROUTER_API_KEY environment variable.");
+    throw new Error("OpenRouter API key not found. Please set OPENROUTER_API_KEY environment variable in your Replit Secrets.");
   }
 
   // Create enhanced prompt based on content requirements
@@ -60,15 +60,15 @@ async function generateWithOpenRouter(request: OpenRouterRequest): Promise<strin
       headers: {
         'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
-        'HTTP-Referer': process.env.REPLIT_DOMAINS || 'https://lexa.replit.app',
-        'X-Title': 'Lexa Content Generator'
+        'HTTP-Referer': process.env.REPLIT_DOMAINS || 'https://writtus.replit.app',
+        'X-Title': 'Writtus Content Generator'
       },
       body: JSON.stringify({
         model: model,
         messages: [
           {
             role: 'system',
-            content: 'You are Lexa, an expert content creator powered by Quzard. Generate high-quality, engaging content that matches the user\'s requirements exactly. Focus on clarity, creativity, and authenticity.'
+            content: 'You are Writtus, an expert content creator powered by Cripticle. Generate high-quality, engaging content that matches the user\'s requirements exactly. Focus on clarity, creativity, and authenticity.'
           },
           {
             role: 'user',
