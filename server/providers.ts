@@ -59,13 +59,17 @@ async function generateWithOpenRouter(request: OpenRouterRequest): Promise<strin
   try {
     console.log(`📡 OpenRouter API Request to model: ${model}`);
     
+    const cleanApiKey = apiKey.trim().replace(/[\r\n\t]/g, '');
+    console.log('🔑 Using API key (first 10 chars):', cleanApiKey.substring(0, 10) + '...');
+    console.log('🔑 API key length:', cleanApiKey.length);
+    
     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${apiKey}`,
+        'Authorization': `Bearer ${cleanApiKey}`,
         'Content-Type': 'application/json',
-        'HTTP-Referer': process.env.REPLIT_DOMAINS || 'https://writtus.replit.app',
-        'X-Title': 'Writtus Content Generator'
+        'HTTP-Referer': process.env.REPLIT_DOMAINS || 'https://lexa-ai.replit.app',
+        'X-Title': 'Lexa - AI Content Generator'
       },
       body: JSON.stringify({
         model: model,

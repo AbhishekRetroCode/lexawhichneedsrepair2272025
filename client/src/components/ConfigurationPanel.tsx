@@ -268,7 +268,7 @@ const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
       setError(null);
       toast({
         title: "Switched to Gemini",
-        description: "Now using Google Gemini for content generation.",
+        description: "Now using Google Gemini for content generation. This provider is pre-configured and ready to use.",
       });
     }
   };

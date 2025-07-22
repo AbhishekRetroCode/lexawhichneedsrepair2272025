@@ -190,6 +190,22 @@
     border: 1px solid rgb(245 158 11) !important;
   }
   
+  /* Additional dark mode fixes for specific UI elements */
+  .dark [data-state="active"] {
+    color: rgb(255 255 255) !important;
+  }
+  
+  .dark [role="button"]:not([class*="bg-"]) {
+    color: rgb(243 244 246) !important;
+    background-color: rgb(31 41 55) !important;
+    border-color: rgb(107 114 128) !important;
+  }
+  
+  .dark .text-sm,
+  .dark .text-xs {
+    color: rgb(209 213 219) !important;
+  }
+  
   /* Form elements */
   .dark input:not([disabled]),
   .dark textarea:not([disabled]),
