@@ -1,9 +1,8 @@
 import React from "react";
 import { ThemeToggle } from "./ThemeToggle";
-import { useLocation } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useLocation, Link } from "wouter";
 import { Button } from "./ui/button";
-import { HomeIcon, SettingsIcon } from "@radix-ui/react-icons";
+import { Home, Settings } from "lucide-react";
 
 export const Header: React.FC = () => {
   const [location] = useLocation();
@@ -27,10 +26,10 @@ export const Header: React.FC = () => {
             variant="ghost"
             size="sm"
             asChild
-            className={location.pathname === "/" ? "bg-accent" : ""}
+            className={location === "/" ? "bg-accent" : ""}
           >
             <Link to="/">
-              <HomeIcon className="h-4 w-4 mr-2" />
+              <Home className="h-4 w-4 mr-2" />
               Home
             </Link>
           </Button>
@@ -39,10 +38,10 @@ export const Header: React.FC = () => {
             variant="ghost"
             size="sm"
             asChild
-            className={location.pathname === "/settings" ? "bg-accent" : ""}
+            className={location === "/settings" ? "bg-accent" : ""}
           >
             <Link to="/settings">
-              <SettingsIcon className="h-4 w-4 mr-2" />
+              <Settings className="h-4 w-4 mr-2" />
               Settings
             </Link>
           </Button>

@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import Header from "@/components/Header";
+import { Header } from "@/components/Header";
 import Footer from "@/components/Footer";
 import ConfigurationPanel from "@/components/ConfigurationPanel";
 import ContentPreview from "@/components/ContentPreview";
-import { ContentAnalyzer } from "@/components/ContentAnalyzer";
-import { ContentEnhancer } from "@/components/ContentEnhancer";
-import { ContentVariations } from "@/components/ContentVariations";
+import ContentAnalyzer from "@/components/ContentAnalyzer";
+import ContentEnhancer from "@/components/ContentEnhancer";
+import ContentVariations from "@/components/ContentVariations";
 import CollapsibleSection from "@/components/CollapsibleSection";
 import ModelSelector from "@/components/ModelSelector";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -124,7 +124,7 @@ const Home = () => {
                     >
                       <ContentEnhancer 
                         content={generatedContent}
-                        onEnhance={(enhancedContent) => setGeneratedContent(enhancedContent)}
+                        onEnhancedContent={(enhancedContent: string) => setGeneratedContent(enhancedContent)}
                       />
                     </CollapsibleSection>
 
@@ -136,10 +136,14 @@ const Home = () => {
                       variant="secondary"
                     >
                       <ContentVariations 
-                        originalContent={generatedContent}
+                        content={generatedContent}
+                        originalTopic={currentTopic}
                         contentType={contentType}
-                        writingStyle={writingStyle}
-                        onVariationSelect={(variation) => setGeneratedContent(variation)}
+                        onVariationGenerated={(variation: string, type: string, style: string) => {
+                          setGeneratedContent(variation);
+                          setContentType(type);
+                          setWritingStyle(style);
+                        }}
                       />
                     </CollapsibleSection>
                   </>
