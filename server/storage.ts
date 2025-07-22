@@ -49,7 +49,7 @@ interface StorageData {
 
 const STORAGE_FILE = path.join(process.cwd(), 'storage.json');
 
-export async function saveApiKey(key: string, provider: 'gemini' | 'openrouter' = 'gemini'): Promise<void> {
+export async function saveApiKey(provider: string, key: string): Promise<void> {
   try {
     let data: StorageData = {};
     try {
@@ -59,11 +59,12 @@ export async function saveApiKey(key: string, provider: 'gemini' | 'openrouter' 
 
     if (provider === 'gemini') {
       data.geminiApiKey = key;
-    } else {
+    } else if (provider === 'openrouter') {
       data.openrouterApiKey = key;
     }
 
     await fs.writeFile(STORAGE_FILE, JSON.stringify(data, null, 2));
+    console.log(`✅ Saved ${provider} API key`);
   } catch (error) {
     console.error('Failed to save API key:', error);
     throw error;

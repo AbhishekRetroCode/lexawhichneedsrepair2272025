@@ -94,13 +94,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // API key management
   app.post('/api/save-key', async (req, res) => {
     try {
-      const { apiKey, provider = 'gemini' } = req.body;
+      const { provider, apiKey } = req.body;
 
-      if (!apiKey || typeof apiKey !== 'string') {
-        return res.status(400).json({ error: 'Invalid API key' });
+      if (!apiKey || typeof apiKey !== 'string' || !provider) {
+        return res.status(400).json({ error: 'Invalid API key or provider' });
       }
 
-      await saveApiKey(apiKey, provider as 'gemini' | 'openrouter');
+      await saveApiKey(provider, apiKey);
       res.json({ success: true });
     } catch (error) {
       console.error('Failed to save API key:', error);

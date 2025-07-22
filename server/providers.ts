@@ -44,7 +44,11 @@ interface OpenRouterRequest {
 async function generateWithOpenRouter(request: OpenRouterRequest): Promise<string> {
   const { topic, contentType, writingStyle, contentLength, model } = request;
   
-  const apiKey = process.env.OPENROUTER_API_KEY;
+  const { getApiKey } = await import('./storage.js');
+  const apiKey = await getApiKey('openrouter');
+  
+  console.log('🔍 Retrieved OpenRouter API key:', apiKey ? 'Found' : 'Not found');
+  
   if (!apiKey) {
     throw new Error("OpenRouter API key not configured. Please provide your OpenRouter API key in the application settings or switch to Gemini provider.");
   }

@@ -150,11 +150,44 @@
   
   /* Text elements - high priority for visibility */
   .dark label,
-  .dark span:not([class*="bg-"]):not([class*="text-green"]):not([class*="text-red"]):not([class*="text-amber"]),
+  .dark span:not([class*="bg-"]):not([class*="text-green"]):not([class*="text-red"]):not([class*="text-amber"]):not([class*="text-white"]),
   .dark p,
-  .dark div:not([class*="bg-"]),
+  .dark div:not([class*="bg-"]):not(.content-length-btn),
   .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
     color: rgb(243 244 246) !important;
+  }
+  
+  /* Content length buttons specific styling */
+  .dark .content-length-btn {
+    color: rgb(243 244 246) !important;
+    background-color: rgb(31 41 55) !important;
+    border-color: rgb(107 114 128) !important;
+  }
+  
+  .dark .content-length-btn.active,
+  .dark .content-length-btn[data-state="active"] {
+    color: rgb(255 255 255) !important;
+    background-color: rgb(245 158 11) !important;
+    border-color: rgb(245 158 11) !important;
+  }
+  
+  /* Fix button text visibility in dark mode - make sure all buttons are visible */
+  .dark button span,
+  .dark .content-length-btn span {
+    color: inherit !important;
+  }
+  
+  /* Ensure content length buttons are fully visible in dark mode */
+  .dark button.content-length-btn {
+    color: rgb(243 244 246) !important;
+    background-color: rgb(31 41 55) !important;
+    border: 1px solid rgb(107 114 128) !important;
+  }
+  
+  .dark button.content-length-btn.active {
+    color: rgb(255 255 255) !important;
+    background-color: rgb(245 158 11) !important;
+    border: 1px solid rgb(245 158 11) !important;
   }
   
   /* Form elements */
