@@ -89,7 +89,6 @@ const Home = () => {
             <Card className="enhanced-card">
               <CardHeader>
                 <CardTitle className="text-xl font-semibold flex items-center gap-2">
-                  <div className="w-2 h-2 bg-primary rounded-full"></div>
                   Content Configuration
                 </CardTitle>
                 <CardDescription>Configure your content generation settings and preferences</CardDescription>
