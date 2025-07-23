@@ -269,19 +269,7 @@ export default function Settings() {
               </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="openrouter-key">OpenRouter API Key</Label>
-              <div className="flex gap-2">
-                <Input
-                  id="openrouter-key"
-                  type="password"
-                  placeholder="Enter your OpenRouter API key"
-                  value={openrouterApiKey}
-                  onChange={(e) => setOpenrouterApiKey(e.target.value)}
-                />
-                <Button onClick={() => saveApiKey('openrouter')}>Save</Button>
-              </div>
-            </div>
+            
           </CardContent>
         </Card>
 

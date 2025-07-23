@@ -145,18 +145,7 @@ const Home = () => {
             </CardContent>
           </Card>
 
-          {/* API Key Management (show only when OpenRouter is selected) */}
-          {selectedProvider === 'openrouter' && (
-            <Card>
-              <CardHeader>
-                <CardTitle>OpenRouter API Key Configuration</CardTitle>
-                <CardDescription>Configure your OpenRouter API key to enable content generation</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ApiKeyManager />
-              </CardContent>
-            </Card>
-          )}
+          
 
           {/* Generated Content */}
           <Card>
