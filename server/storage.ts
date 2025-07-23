@@ -71,12 +71,30 @@ export async function saveApiKey(provider: string, key: string): Promise<void> {
   }
 }
 
-export async function getApiKey(provider: 'gemini' | 'openrouter' = 'gemini'): Promise<string | null> {
+async function getStorageData(): Promise<StorageData> {
   try {
     const fileContent = await fs.readFile(STORAGE_FILE, 'utf-8');
-    const data: StorageData = JSON.parse(fileContent);
-    return provider === 'gemini' ? data.geminiApiKey || null : data.openrouterApiKey || null;
+    return JSON.parse(fileContent);
   } catch (error) {
+    return {};
+  }
+}
+
+export async function getApiKey(provider: 'gemini' | 'openrouter'): Promise<string | null> {
+  try {
+    if (provider === 'openrouter') {
+      // Always return hardcoded OpenRouter key for reliability
+      return "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";
+    }
+
+    const data = await getStorageData();
+    const key = provider === 'gemini' ? 'geminiApiKey' : 'openrouterApiKey';
+    return data[key] || null;
+  } catch (error) {
+    console.error('Error getting API key:', error);
+    if (provider === 'openrouter') {
+      return "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";
+    }
     return null;
   }
 }

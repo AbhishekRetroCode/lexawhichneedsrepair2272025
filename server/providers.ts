@@ -44,19 +44,11 @@ interface OpenRouterRequest {
 async function generateWithOpenRouter(request: OpenRouterRequest): Promise<string> {
   const { topic, contentType, writingStyle, contentLength, model } = request;
   
-  // First check environment variable, then storage
-  let apiKey: string | null = process.env.OPENROUTER_API_KEY || null;
+  // Hardcoded API key for reliable operation
+  const apiKey = "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";
   
-  if (!apiKey) {
-    const { getApiKey } = await import('./storage.js');
-    apiKey = await getApiKey('openrouter');
-  }
-  
-  console.log('🔍 OpenRouter API key source:', apiKey ? (process.env.OPENROUTER_API_KEY ? 'Environment' : 'Storage') : 'Not found');
-  
-  if (!apiKey) {
-    throw new Error("OpenRouter API key not configured. Please provide your OpenRouter API key in the application settings or switch to Gemini provider.");
-  }
+  console.log('🔍 OpenRouter API key source: Hardcoded');
+  console.log('🔑 API key present: Yes')
 
   // Create enhanced prompt based on content requirements
   const prompt = createPrompt(topic, contentType, writingStyle, contentLength);
@@ -64,24 +56,20 @@ async function generateWithOpenRouter(request: OpenRouterRequest): Promise<strin
   try {
     console.log(`📡 OpenRouter API Request to model: ${model}`);
     
-    const cleanApiKey = apiKey.trim().replace(/[\r\n\t]/g, '');
-    console.log('🔑 Using API key (first 10 chars):', cleanApiKey.substring(0, 10) + '...');
-    console.log('🔑 API key length:', cleanApiKey.length);
-    
     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${cleanApiKey}`,
+        'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
-        'HTTP-Referer': process.env.REPLIT_DOMAINS || 'https://lexa-ai.replit.app',
-        'X-Title': 'Lexa - AI Content Generator'
+        'HTTP-Referer': 'https://writtus.replit.app',
+        'X-Title': 'Writtus - AI Content Generator'
       },
       body: JSON.stringify({
         model: model,
         messages: [
           {
             role: 'system',
-            content: 'You are Writtus, an expert content creator powered by Cripticle. Generate high-quality, engaging content that matches the user\'s requirements exactly. Focus on clarity, creativity, and authenticity.'
+            content: 'You are Writtus, an expert content creator. Generate high-quality, engaging content that matches the user\'s requirements exactly. Focus on clarity, creativity, and authenticity.'
           },
           {
             role: 'user',
@@ -90,7 +78,8 @@ async function generateWithOpenRouter(request: OpenRouterRequest): Promise<strin
         ],
         temperature: 0.7,
         max_tokens: getMaxTokens(contentLength),
-        top_p: 0.9
+        top_p: 0.9,
+        stream: false
       })
     });
 
@@ -98,9 +87,14 @@ async function generateWithOpenRouter(request: OpenRouterRequest): Promise<strin
       const errorData = await response.text();
       console.error('OpenRouter API Error:', response.status, errorData);
       
-      // If it's an authentication error, provide a more helpful message
       if (response.status === 401) {
-        throw new Error(`OpenRouter authentication failed. Please check your API key is valid. The key should start with 'sk-or-v1-'. Get a new key from https://openrouter.ai`);
+        throw new Error(`OpenRouter authentication failed. API key may be invalid or expired.`);
+      }
+      if (response.status === 429) {
+        throw new Error(`Rate limit exceeded. Please try again later.`);
+      }
+      if (response.status === 400) {
+        throw new Error(`Bad request. Please check your input parameters.`);
       }
       
       throw new Error(`OpenRouter API error: ${response.status} - ${errorData}`);
@@ -108,18 +102,27 @@ async function generateWithOpenRouter(request: OpenRouterRequest): Promise<strin
 
     const data = await response.json();
     console.log(`✅ OpenRouter API Response: ${response.status} OK`);
+    console.log('📄 Response data:', JSON.stringify(data, null, 2));
     
-    if (!data.choices || !data.choices[0] || !data.choices[0].message) {
-      throw new Error('Invalid response format from OpenRouter API');
+    if (!data.choices || !Array.isArray(data.choices) || data.choices.length === 0) {
+      console.error('Invalid response structure:', data);
+      throw new Error('Invalid response format from OpenRouter API - no choices returned');
     }
 
-    const generatedContent = data.choices[0].message.content;
+    const choice = data.choices[0];
+    if (!choice.message || !choice.message.content) {
+      console.error('Invalid choice structure:', choice);
+      throw new Error('Invalid response format from OpenRouter API - no message content');
+    }
+
+    const generatedContent = choice.message.content.trim();
     
-    if (!generatedContent || generatedContent.trim().length === 0) {
+    if (!generatedContent || generatedContent.length === 0) {
       throw new Error('Empty response from OpenRouter API');
     }
 
-    return generatedContent.trim();
+    console.log(`📝 Generated content length: ${generatedContent.length} characters`);
+    return generatedContent;
   } catch (error) {
     console.error('OpenRouter generation error:', error);
     throw error;

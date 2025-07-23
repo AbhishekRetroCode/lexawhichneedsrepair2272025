@@ -66,7 +66,7 @@ export const openRouterProviders = [
 
 // OpenRouter API Configuration
 export const OPENROUTER_API_BASE = "https://openrouter.ai/api/v1";
-export const OPENROUTER_SITE_URL = import.meta.env.VITE_SITE_URL || "https://writtus.replit.app";
+export const OPENROUTER_SITE_URL = "https://writtus.replit.app";
 export const OPENROUTER_APP_NAME = "Writtus";
 
 // Default model selection
