@@ -84,7 +84,7 @@ export async function getApiKey(provider: 'gemini' | 'openrouter'): Promise<stri
   try {
     if (provider === 'openrouter') {
       // Always return hardcoded OpenRouter key for reliability
-      return "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";
+      return "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";
     }
 
     const data = await getStorageData();
@@ -93,7 +93,7 @@ export async function getApiKey(provider: 'gemini' | 'openrouter'): Promise<stri
   } catch (error) {
     console.error('Error getting API key:', error);
     if (provider === 'openrouter') {
-      return "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";
+      return "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";
     }
     return null;
   }

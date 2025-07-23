@@ -44,8 +44,8 @@ interface OpenRouterRequest {
 async function generateWithOpenRouter(request: OpenRouterRequest): Promise<string> {
   const { topic, contentType, writingStyle, contentLength, model } = request;
   
-  // Hardcoded API key for reliable operation
-  const apiKey = "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";
+  // Use a valid OpenRouter API key
+  const apiKey = "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";
   
   console.log('🔍 OpenRouter API key source: Hardcoded');
   console.log('🔑 API key present: Yes')
@@ -86,15 +86,21 @@ async function generateWithOpenRouter(request: OpenRouterRequest): Promise<strin
     if (!response.ok) {
       const errorData = await response.text();
       console.error('OpenRouter API Error:', response.status, errorData);
+      console.error('Request headers:', JSON.stringify({
+        'Authorization': `Bearer ${apiKey.substring(0, 10)}...`,
+        'Content-Type': 'application/json',
+        'HTTP-Referer': 'https://writtus.replit.app',
+        'X-Title': 'Writtus - AI Content Generator'
+      }));
       
       if (response.status === 401) {
-        throw new Error(`OpenRouter authentication failed. API key may be invalid or expired.`);
+        throw new Error(`OpenRouter authentication failed. Check API key validity.`);
       }
       if (response.status === 429) {
         throw new Error(`Rate limit exceeded. Please try again later.`);
       }
       if (response.status === 400) {
-        throw new Error(`Bad request. Please check your input parameters.`);
+        throw new Error(`Bad request. Model: ${model} may not exist or input invalid.`);
       }
       
       throw new Error(`OpenRouter API error: ${response.status} - ${errorData}`);
