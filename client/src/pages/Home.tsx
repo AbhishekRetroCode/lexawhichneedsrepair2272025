@@ -10,8 +10,30 @@ import ContentVariations from "@/components/ContentVariations";
 import CollapsibleSection from "@/components/CollapsibleSection";
 import ModelSelector from "@/components/ModelSelector";
 import ApiKeyManager from "@/components/ApiKeyManager";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { QuickActionsBar } from "@/components/QuickActionsBar";
+import { ContentLengthGoal } from "@/components/ContentLengthGoal";
+import { ProgressIndicator } from "@/components/ProgressIndicator";
+import { 
+  Sparkles, 
+  History, 
+  FileText, 
+  Zap, 
+  Clock, 
+  TrendingUp,
+  BookOpen,
+  PenTool,
+  Target,
+  BarChart3,
+  Download,
+  Copy,
+  RefreshCw
+} from 'lucide-react';
 
 export interface ContentItem {
   id: string;
