@@ -67,7 +67,7 @@ const Home = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            Lexa AI Content Generator
+            Writtus
           </motion.h1>
           <motion.p 
             className="text-lg text-muted-foreground max-w-2xl mx-auto"
