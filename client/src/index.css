@@ -8,24 +8,24 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 0 0% 97%;
     --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
+    --card: 0 0% 97%;
     --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
+    --popover: 0 0% 97%;
     --popover-foreground: 222.2 84% 4.9%;
     --primary: 222.2 47.4% 11.2%;
     --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96%;
+    --secondary: 210 40% 94%;
     --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96%;
+    --muted: 210 40% 94%;
     --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96%;
+    --accent: 210 40% 94%;
     --accent-foreground: 222.2 47.4% 11.2%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
+    --border: 214.3 31.8% 88%;
+    --input: 214.3 31.8% 88%;
     --ring: 222.2 84% 4.9%;
     --radius: 0.5rem;
     --chart-1: 12 76% 61%;
@@ -70,7 +70,8 @@
     @apply bg-background text-foreground font-serif antialiased;
     transition: background-color 0.3s ease, color 0.3s ease;
     font-family: 'Crimson Text', 'Source Serif Pro', Georgia, serif;
-    background-image: radial-gradient(circle, hsl(var(--muted-foreground) / 0.1) 1px, transparent 1px);
+    background-color: hsl(0, 0%, 97%);
+    background-image: radial-gradient(circle, hsl(var(--muted-foreground) / 0.08) 1px, transparent 1px);
     background-size: 20px 20px;
   }
   
