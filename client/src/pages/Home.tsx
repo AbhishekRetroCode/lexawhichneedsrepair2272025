@@ -148,20 +148,10 @@ const Home = () => {
           
 
           {/* Generated Content */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Generated Content</CardTitle>
-              <CardDescription>Your AI-generated content will appear here</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="content-area writing-font">
-                <ContentPreview
-                  content={generatedContent}
-                  isGenerating={isGenerating}
-                />
-              </div>
-            </CardContent>
-          </Card>
+          <ContentPreview
+            content={generatedContent}
+            isGenerating={isGenerating}
+          />
 
           {/* Content Analysis Tools */}
           {generatedContent && (

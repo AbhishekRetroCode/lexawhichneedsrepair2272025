@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useTheme } from '../contexts/ThemeContext';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
@@ -47,7 +46,7 @@ export default function Settings() {
 
   const applySettings = (newSettings: Settings) => {
     const root = document.documentElement;
-    
+
     // Apply font family
     switch (newSettings.fontFamily) {
       case 'crimson':
@@ -65,11 +64,11 @@ export default function Settings() {
       default:
         root.style.setProperty('--font-family', "'Crimson Text', 'Source Serif Pro', Georgia, serif");
     }
-    
+
     root.style.setProperty('--font-size', `${newSettings.fontSize}px`);
     root.style.setProperty('--font-weight', newSettings.fontWeight);
     root.style.setProperty('--line-height', newSettings.lineHeight);
-    
+
     // Force a repaint to ensure changes are applied
     document.body.style.display = 'none';
     document.body.offsetHeight; // Trigger reflow
@@ -112,6 +111,15 @@ export default function Settings() {
       });
     }
   };
+
+    const updateSettings = (newSettings: Partial<Settings>) => {
+        setSettings((prevSettings) => {
+            const updatedSettings = { ...prevSettings, ...newSettings };
+            localStorage.setItem('writtus-settings', JSON.stringify(updatedSettings));
+            applySettings(updatedSettings as Settings);
+            return updatedSettings;
+        });
+    };
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
@@ -191,22 +199,24 @@ export default function Settings() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="font-weight">Font Weight</Label>
-              <Select
-                value={settings.fontWeight}
-                onValueChange={(value) => handleSettingsChange('fontWeight', value)}
-              >
+              <Label htmlFor="font-weight">Font Weight & Boldness</Label>
+              <Select value={settings.fontWeight} onValueChange={(value) => updateSettings({ fontWeight: value })}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="300">Light (300)</SelectItem>
-                  <SelectItem value="400">Normal (400)</SelectItem>
+                  <SelectItem value="400">Regular (400)</SelectItem>
                   <SelectItem value="500">Medium (500)</SelectItem>
                   <SelectItem value="600">Semi Bold (600)</SelectItem>
                   <SelectItem value="700">Bold (700)</SelectItem>
+                  <SelectItem value="800">Extra Bold (800)</SelectItem>
+                  <SelectItem value="900">Black (900)</SelectItem>
                 </SelectContent>
               </Select>
+              <p className="text-xs text-muted-foreground">
+                Higher values provide more boldness for better readability
+              </p>
             </div>
 
             <div className="space-y-2">
@@ -269,7 +279,7 @@ export default function Settings() {
               </div>
             </div>
 
-            
+
           </CardContent>
         </Card>
 
