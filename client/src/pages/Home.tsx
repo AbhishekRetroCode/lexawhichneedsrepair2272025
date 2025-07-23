@@ -10,15 +10,15 @@ import ContentVariations from "@/components/ContentVariations";
 import CollapsibleSection from "@/components/CollapsibleSection";
 import ModelSelector from "@/components/ModelSelector";
 import ApiKeyManager from "@/components/ApiKeyManager";
+import { QuickActionsBar } from "@/components/QuickActionsBar";
+import { ContentLengthGoal } from "@/components/ContentLengthGoal";
+import { ProgressIndicator } from "@/components/ProgressIndicator";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { QuickActionsBar } from "@/components/QuickActionsBar";
-import { ContentLengthGoal } from "@/components/ContentLengthGoal";
-import { ProgressIndicator } from "@/components/ProgressIndicator";
 import { 
   Sparkles, 
   History, 
