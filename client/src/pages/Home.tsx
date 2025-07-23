@@ -60,19 +60,41 @@ const Home = () => {
       <Header />
 
       <main className="container mx-auto px-4 py-8 max-w-4xl">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold heading-font text-foreground mb-2">Content Generator</h1>
-          <p className="text-muted-foreground">Create professional content with AI-powered tools</p>
+        <div className="mb-8 text-center">
+          <motion.h1 
+            className="text-4xl font-bold heading-font heading-gradient mb-3"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            Lexa AI Content Generator
+          </motion.h1>
+          <motion.p 
+            className="text-lg text-muted-foreground max-w-2xl mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            Create professional, engaging content with AI-powered tools and advanced customization
+          </motion.p>
         </div>
 
         <div className="space-y-6">
           {/* Configuration Section */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Configuration</CardTitle>
-              <CardDescription>Configure your content generation settings</CardDescription>
-            </CardHeader>
-            <CardContent>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
+            <Card className="enhanced-card">
+              <CardHeader>
+                <CardTitle className="text-xl font-semibold flex items-center gap-2">
+                  <div className="w-2 h-2 bg-primary rounded-full"></div>
+                  Content Configuration
+                </CardTitle>
+                <CardDescription>Configure your content generation settings and preferences</CardDescription>
+              </CardHeader>
+              <CardContent>
               <ConfigurationPanel 
                 onGenerate={handleContentGenerate}
                 setIsGenerating={setIsGenerating}
@@ -84,6 +106,7 @@ const Home = () => {
               />
             </CardContent>
           </Card>
+          </motion.div>
 
           {/* AI Model Selection */}
           <Card>
