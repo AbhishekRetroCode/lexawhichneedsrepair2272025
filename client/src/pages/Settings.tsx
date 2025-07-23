@@ -13,6 +13,7 @@ import { useLocation } from 'wouter';
 interface Settings {
   fontFamily: string;
   fontSize: string;
+  fontWeight: string;
   lineHeight: string;
   autoSave: boolean;
 }
@@ -23,6 +24,7 @@ export default function Settings() {
   const [settings, setSettings] = useState<Settings>({
     fontFamily: 'crimson',
     fontSize: '16',
+    fontWeight: '400',
     lineHeight: '1.6',
     autoSave: true,
   });
@@ -65,6 +67,7 @@ export default function Settings() {
     }
     
     root.style.setProperty('--font-size', `${newSettings.fontSize}px`);
+    root.style.setProperty('--font-weight', newSettings.fontWeight);
     root.style.setProperty('--line-height', newSettings.lineHeight);
     
     // Force a repaint to ensure changes are applied
@@ -188,6 +191,25 @@ export default function Settings() {
             </div>
 
             <div className="space-y-2">
+              <Label htmlFor="font-weight">Font Weight</Label>
+              <Select
+                value={settings.fontWeight}
+                onValueChange={(value) => handleSettingsChange('fontWeight', value)}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="300">Light (300)</SelectItem>
+                  <SelectItem value="400">Normal (400)</SelectItem>
+                  <SelectItem value="500">Medium (500)</SelectItem>
+                  <SelectItem value="600">Semi Bold (600)</SelectItem>
+                  <SelectItem value="700">Bold (700)</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
               <Label htmlFor="line-height">Line Height</Label>
               <Select
                 value={settings.lineHeight}
@@ -218,6 +240,7 @@ export default function Settings() {
                          settings.fontFamily === 'inter' ? 'Inter' :
                          settings.fontFamily === 'playfair' ? 'Playfair Display' : 'Courier New'} | 
                   Size: {settings.fontSize}px | 
+                  Weight: {settings.fontWeight} | 
                   Line Height: {settings.lineHeight}
                 </p>
               </div>
