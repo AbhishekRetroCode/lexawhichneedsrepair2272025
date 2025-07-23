@@ -143,10 +143,12 @@ const Home = () => {
               <CardDescription>Your AI-generated content will appear here</CardDescription>
             </CardHeader>
             <CardContent>
-              <ContentPreview 
-                content={generatedContent}
-                isGenerating={isGenerating}
-              />
+              <div className="content-area writing-font">
+                <ContentPreview
+                  content={generatedContent}
+                  isGenerating={isGenerating}
+                />
+              </div>
             </CardContent>
           </Card>
 

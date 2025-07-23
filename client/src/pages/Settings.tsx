@@ -34,11 +34,13 @@ export default function Settings() {
     // Load settings from localStorage
     const saved = localStorage.getItem('writtus-settings');
     if (saved) {
-      setSettings(JSON.parse(saved));
+      const loadedSettings = JSON.parse(saved);
+      setSettings(loadedSettings);
+      applySettings(loadedSettings);
+    } else {
+      // Apply default settings
+      applySettings(settings);
     }
-
-    // Apply settings to document
-    applySettings(settings);
   }, []);
 
   const applySettings = (newSettings: Settings) => {
@@ -58,10 +60,17 @@ export default function Settings() {
       case 'courier':
         root.style.setProperty('--font-family', "'Courier New', Courier, monospace");
         break;
+      default:
+        root.style.setProperty('--font-family', "'Crimson Text', 'Source Serif Pro', Georgia, serif");
     }
     
     root.style.setProperty('--font-size', `${newSettings.fontSize}px`);
     root.style.setProperty('--line-height', newSettings.lineHeight);
+    
+    // Force a repaint to ensure changes are applied
+    document.body.style.display = 'none';
+    document.body.offsetHeight; // Trigger reflow
+    document.body.style.display = '';
   };
 
   const handleSettingsChange = (key: keyof Settings, value: string | boolean) => {
@@ -194,6 +203,24 @@ export default function Settings() {
                   <SelectItem value="2.0">Loose (2.0)</SelectItem>
                 </SelectContent>
               </Select>
+            </div>
+
+            {/* Font Preview */}
+            <div className="space-y-2 mt-6">
+              <Label>Font Preview</Label>
+              <div className="p-4 border rounded-lg bg-card writing-font content-area">
+                <p className="mb-2">
+                  This is a sample paragraph showing how your content will look with the selected font settings. 
+                  The font family, size, and line height will all be applied to your generated content.
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  Font: {settings.fontFamily === 'crimson' ? 'Crimson Text' : 
+                         settings.fontFamily === 'inter' ? 'Inter' :
+                         settings.fontFamily === 'playfair' ? 'Playfair Display' : 'Courier New'} | 
+                  Size: {settings.fontSize}px | 
+                  Line Height: {settings.lineHeight}
+                </p>
+              </div>
             </div>
           </CardContent>
         </Card>

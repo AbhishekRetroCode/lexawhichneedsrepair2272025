@@ -33,6 +33,11 @@
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
+    
+    /* Default font settings */
+    --font-family: 'Crimson Text', 'Source Serif Pro', Georgia, serif;
+    --font-size: 16px;
+    --line-height: 1.6;
   }
 
   [data-theme="dark"], .dark {
@@ -69,7 +74,9 @@
   body {
     @apply bg-background text-foreground font-serif antialiased;
     transition: background-color 0.3s ease, color 0.3s ease;
-    font-family: 'Crimson Text', 'Source Serif Pro', Georgia, serif;
+    font-family: var(--font-family, 'Crimson Text', 'Source Serif Pro', Georgia, serif);
+    font-size: var(--font-size, 16px);
+    line-height: var(--line-height, 1.6);
     background-color: hsl(0, 0%, 97%);
     background-image: radial-gradient(circle, hsl(var(--muted-foreground) / 0.08) 1px, transparent 1px);
     background-size: 20px 20px;
@@ -85,13 +92,29 @@
   }
   
   .writing-font {
-    font-family: 'Crimson Text', 'Source Serif Pro', Georgia, serif;
+    font-family: var(--font-family, 'Crimson Text', 'Source Serif Pro', Georgia, serif);
+    font-size: var(--font-size, 16px);
+    line-height: var(--line-height, 1.6);
     letter-spacing: 0.01em;
   }
   
   .heading-font {
     font-family: 'Playfair Display', 'Source Serif Pro', Georgia, serif;
     letter-spacing: 0.02em;
+  }
+  
+  /* Apply font settings to main content areas */
+  .content-area,
+  .content-area *,
+  p, span, div:not(.heading-font):not(.typewriter-font) {
+    font-family: var(--font-family, 'Crimson Text', 'Source Serif Pro', Georgia, serif);
+    font-size: var(--font-size, 16px);
+    line-height: var(--line-height, 1.6);
+  }
+  
+  /* Preserve heading fonts */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', 'Source Serif Pro', Georgia, serif;
   }
   
   /* Ink drop animation */
